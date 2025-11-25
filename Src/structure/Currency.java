@@ -1,10 +1,10 @@
 package structure;
 
-public class currency implements Comparable<currency>{
+public class Currency implements Comparable<Currency>{
 
     /* INGEN MATEMATIK ELLER LOGIK -
        Her fortæller vi java:
-       Hvad er en currency?
+       Hvad er en Currency?
 
        Vi skal ikke have nogen logik herinde.
         */
@@ -14,7 +14,7 @@ public class currency implements Comparable<currency>{
     double rate;
     int lastUpdated;
 
-    public int compareTo(currency o) {
+    public int compareTo(Currency o) {
         return 0;
     }
 
