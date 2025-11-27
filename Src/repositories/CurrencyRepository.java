@@ -2,52 +2,89 @@ package repositories;/* CSV I/O
 Her fortæller vi java - hvor kommer data fra?
  */
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import structure.Currency;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CurrencyRepository {
-
+    String file = "Database/currency.csv";
     public static void main(String[] args) {
-        String file = "Database/currency.csv";
-        readFromFile(file);}
-
-        // Læs tekst fra en fil og returnér som String
-        public static String readFromFile (String file){
-            String line = "";
-            StringBuilder sb = new StringBuilder();
-
-            try {
-                BufferedReader br = new BufferedReader(new FileReader(file));
-                boolean isFirstLine = true;
-
-                while ((line = br.readLine()) != null) {
-                    if (isFirstLine) {
-                        isFirstLine = false;
-                        continue;
-                    }
-
-                    String[] row = line.split(";");
-                    for (String index : row) {
-                        System.out.printf("%-8s", index);
-                        sb.append(index).append(" ");
-                    }
-                    System.out.println();
-                    sb.append("\n");
-                }
-                br.close();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            return sb.toString();
-
-        }
-
-
+        CurrencyRepository repository = new CurrencyRepository();
+        List<Currency> currencies = repository.loadCurrency();
     }
+
+
+
+
+    public List<Currency> loadCurrency(){
+        List<Currency> currencies = new ArrayList<>();
+        String line = "";
+
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            boolean isFirstLine = true;
+
+            while ((line = br.readLine()) != null) {
+
+                if (isFirstLine) {
+                    isFirstLine = false;
+                    continue;
+                }
+                String[] parts = line.split(";");
+
+                String baseCurrency = parts[0];
+                String quoteCurrency = parts[1];
+                double rate = Double.parseDouble(parts[2].replace(",", "."));
+                int lastUpdated = Integer.parseInt(parts[3].replace("-", ""));
+
+                // kalder vores constructor fra Currency
+                Currency c = new Currency(
+                        baseCurrency, quoteCurrency, rate, lastUpdated
+                );
+                currencies.add(c);
+
+
+                String[] row = line.split(";");
+                for (String index : row) {
+                    System.out.printf("%-8s", index);
+                }
+                System.out.println();
+
+            }
+            br.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return currencies;
+    }
+
+
+    // .csv OUT:
+    public void saveCurrency(List<Currency> currencies) {
+
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
+
+            for (Currency c : currencies) {
+                String line = String.join(";",
+                        c.getBaseCurrency(),
+                        c.getQuoteCurrency(),
+                        String.valueOf(c.getRate()),
+                        String.valueOf(c.getLastUpdated())
+                );
+
+                bw.write(line);
+                bw.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+}
 
 
 
