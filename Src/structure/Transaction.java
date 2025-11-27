@@ -9,7 +9,7 @@ public class Transaction implements Comparable<Transaction> {
 
     private int id;
     private int userId;
-    private String date;
+    private int date;
     private String ticker;
     private double price;
     private String currency;
@@ -18,7 +18,7 @@ public class Transaction implements Comparable<Transaction> {
 
     public Transaction(int id,
                        int userId,
-                       String date,
+                       int date,
                        String ticker,
                        double price,
                        String currency,
@@ -47,7 +47,7 @@ public class Transaction implements Comparable<Transaction> {
         return userId;
     }
 
-    public String getDate() {
+    public int getDate() {
         return date;
     }
 
@@ -80,7 +80,7 @@ public class Transaction implements Comparable<Transaction> {
         this.userId = userId;
     }
 
-    public void setDate(String date) {
+    public void setDate(int date) {
         this.date = date;
     }
 
