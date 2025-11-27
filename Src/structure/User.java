@@ -8,7 +8,7 @@ public class User implements Comparable<User>{
 
     Vi skal ikke have nogen logik herinde.
      */
-
+//
     public int id; // kommentar, har ændret first/last name til FullName*
     public String fullName;
     public String email;
@@ -17,7 +17,7 @@ public class User implements Comparable<User>{
     public int createdAt;
     public int lastUpdated;
 
-    public User (int id, String fullName, String email, String birthDate, double initialCashDKK, String createdAt, String lastUpdated) {
+    public User (int id, String fullName, String email, int birthDate, double initialCashDKK, int createdAt, int lastUpdated) {
 
         this.id = id;
         this.fullName = fullName;
@@ -46,6 +46,8 @@ public class User implements Comparable<User>{
    public int getCreatedAt() {
        return createdAt;
    }
+
+
 
    public int getLastUpdated() {
         return lastUpdated;

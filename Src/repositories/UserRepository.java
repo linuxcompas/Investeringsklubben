@@ -3,8 +3,7 @@ package repositories;
 import structure.User;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /* CSV I/O
 Her fortæller vi java - hvor kommer data fra?
@@ -20,7 +19,7 @@ public class UserRepository {
     public List<User> loadUsers() {
         List<User> users = new ArrayList<>();
 
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("Database/users.csv"))) {
 
             String line;
             br.readLine();
@@ -32,18 +31,19 @@ public class UserRepository {
                 int id = Integer.parseInt(parts[0]);
                 String fullName = parts[1];
                 String email = parts[2];
-                String birthDate = parts[3];
-                double initialCash = Double.parseDouble(parts[4]);
-                String createdAt = parts[5];
-                String lastUpdated = parts[6];
+                int birthDate = Integer.parseInt(parts[3].replace("-", ""));
+                double initialCash = Double.parseDouble(parts[4].replace("-", ""));
+                int createdAt = Integer.parseInt(parts[5].replace("-", ""));
+                int lastUpdated = Integer.parseInt(parts[6].replace("-", ""));
 
-                User user = new User(id, fullName, email, birthDate,
+                User u = new User(
+                        id, fullName, email, birthDate,
                         initialCash, createdAt, lastUpdated);
 
-                users.add(user);
+                users.add(u);
             }
 
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -63,10 +63,11 @@ public class UserRepository {
                             String.valueOf(u.getId()),
                             u.getFullName(),
                             u.getEmail(),
-                            u.getBirthDate(),
+                            String.valueOf(u.getBirthDate()),
                             String.valueOf(u.getInitialCashDKK()),
-                            u.getCreatedAt(),
-                            u.getLastUpdated();
+                            String.valueOf(u.getCreatedAt()),
+                            String.valueOf(u.getLastUpdated())
+                    );
 
                     bw.write(line);
                     bw.newLine();

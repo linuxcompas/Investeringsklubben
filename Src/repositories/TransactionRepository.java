@@ -20,7 +20,7 @@ public class TransactionRepository {
 
                 int id = Integer.parseInt(parts[0]);
                 int userId = Integer.parseInt(parts[1]);
-                String date = parts[2];
+                int date = Integer.parseInt(parts[2]);
                 String ticker = parts[3];
                 double price = Double.parseDouble(parts[4].replace(",", "."));
                 String currency = parts[5];
@@ -64,7 +64,7 @@ public class TransactionRepository {
                 String line = String.join(";",
                         String.valueOf(t.getId()),
                         String.valueOf(t.getUserId()),
-                        t.getDate(),
+                        String.valueOf(t.getDate()),
                         t.getTicker(),
                         priceText,
                         t.getCurrency(),
