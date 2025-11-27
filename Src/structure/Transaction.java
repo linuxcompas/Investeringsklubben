@@ -109,12 +109,8 @@ public class Transaction implements Comparable<Transaction> {
      * Sorterer først efter dato, og hvis datoen er ens, så efter id.
      */
     @Override
-    public int compareTo(Transaction other) {
-        int dateCompare = this.date.compareTo(other.date);
-        if (dateCompare != 0) {
-            return dateCompare;
-        }
-        return Integer.compare(this.id, other.id);
+    public int compareTo(Transaction t) {
+        return this.orderType.compareTo(t.orderType);
     }
 
     @Override
