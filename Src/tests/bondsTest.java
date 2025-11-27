@@ -3,7 +3,7 @@ import repositories.*;
 import structure.Bond;
 import java.util.*;
 
-public class bondsTest {
+public class BondsTest {
 
     public static void main(String[] args) {
 
