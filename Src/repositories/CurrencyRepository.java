@@ -24,14 +24,7 @@ public class CurrencyRepository {
 
         try {
             BufferedReader br = new BufferedReader(new FileReader(file));
-            boolean isFirstLine = true;
 
-            while ((line = br.readLine()) != null) {
-
-                if (isFirstLine) {
-                    isFirstLine = false;
-                    continue;
-                }
                 String[] parts = line.split(";");
 
                 String baseCurrency = parts[0];
@@ -52,7 +45,6 @@ public class CurrencyRepository {
                 }
                 System.out.println();
 
-            }
             br.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
