@@ -3,8 +3,7 @@ package repositories;
 import structure.User;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /* CSV I/O
 Her fortæller vi java - hvor kommer data fra?
@@ -32,10 +31,10 @@ public class UserRepository {
                 int id = Integer.parseInt(parts[0]);
                 String fullName = parts[1];
                 String email = parts[2];
-                int birthDate = Integer.parseInt(parts[3]);
-                double initialCash = Double.parseDouble(parts[4]);
-                int createdAt = Integer.parseInt(parts[5]);
-                int lastUpdated = Integer.parseInt(parts[6]);
+                int birthDate = Integer.parseInt(parts[3].replace("-", ""));
+                double initialCash = Double.parseDouble(parts[4].replace("-", ""));
+                int createdAt = Integer.parseInt(parts[5].replace("-", ""));
+                int lastUpdated = Integer.parseInt(parts[6].replace("-", ""));
 
                 User u = new User(
                         id, fullName, email, birthDate,

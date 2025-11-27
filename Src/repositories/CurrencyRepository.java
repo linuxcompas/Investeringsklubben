@@ -2,10 +2,8 @@ package repositories;/* CSV I/O
 Her fortæller vi java - hvor kommer data fra?
  */
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+
 
 public class CurrencyRepository {
 
