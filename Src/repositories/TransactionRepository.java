@@ -1,16 +1,84 @@
 package repositories;
 
 import structure.Transaction;
-
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.*;
+import java.util.*;
 
 
 public class TransactionRepository {
+
+    // .csv IN:
+    public List<Transaction> loadTransactions() {
+        List<Transaction> transactions = new ArrayList<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader("Database/transactions.csv"))) {
+
+            String line = br.readLine();
+
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(";");
+
+                int id = Integer.parseInt(parts[0]);
+                int userId = Integer.parseInt(parts[1]);
+                String date = parts[2];
+                String ticker = parts[3];
+                double price = Double.parseDouble(parts[4].replace(",", "."));
+                String currency = parts[5];
+                String orderType = parts[6];
+                int quantity = Integer.parseInt(parts[7]);
+
+                Transaction t = new Transaction(
+                        id,
+                        userId,
+                        date,
+                        ticker,
+                        price,
+                        currency,
+                        orderType,
+                        quantity
+                );
+
+                transactions.add(t);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return transactions;
+    }
+
+
+    public void saveTransactions(List<Transaction> transactions) {
+
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("Database/transactions.csv"))) {
+
+
+            bw.write("id;user_id;date;ticker;price;currency;order_type;quantity");
+            bw.newLine();
+
+            for (Transaction t : transactions) {
+
+                String priceText = String.valueOf(t.getPrice()).replace(".", ",");
+
+                String line = String.join(";",
+                        String.valueOf(t.getId()),
+                        String.valueOf(t.getUserId()),
+                        t.getDate(),
+                        t.getTicker(),
+                        priceText,
+                        t.getCurrency(),
+                        t.getOrderType(),
+                        String.valueOf(t.getQuantity())
+                );
+
+                bw.write(line);
+                bw.newLine();
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 }
