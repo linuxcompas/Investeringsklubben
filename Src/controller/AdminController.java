@@ -21,6 +21,6 @@ public class AdminController {
     }
 
     public void viewUserDetails(){
-
     }
+
 }
