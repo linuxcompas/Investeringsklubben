@@ -16,8 +16,9 @@ public class User implements Comparable<User>{
     public double initialCashDKK;
     public int createdAt;
     public int lastUpdated;
+    public int cashBalance;
 
-    public User (int id, String fullName, String email, int birthDate, double initialCashDKK, int createdAt, int lastUpdated) {
+    public User (int id, int cashBalance, String fullName, String email, int birthDate, double initialCashDKK, int createdAt, int lastUpdated) {
 
         this.id = id;
         this.fullName = fullName;
@@ -26,6 +27,7 @@ public class User implements Comparable<User>{
         this.initialCashDKK = initialCashDKK;
         this.createdAt = createdAt;
         this.lastUpdated = lastUpdated;
+        this.cashBalance = cashBalance;
     }
     // har slettet void under vores getter, da getters aldrig skal stå i void siger google.
     public int getId() {
@@ -46,18 +48,43 @@ public class User implements Comparable<User>{
    public int getCreatedAt() {
        return createdAt;
    }
-
-
-
    public int getLastUpdated() {
         return lastUpdated;
    }
+   public int getCashBalance() {
+        return cashBalance;
+   }
 
-   //Setter: Opdatere datoen for hvornår brugeren sidst blev ændret i systemet, så hvergang der bliver foretaget en handling så bliver den nye dato gemt i users.csv
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setBirthDate(int birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public void setInitialCashDKK(double initialCashDKK) {
+        this.initialCashDKK = initialCashDKK;
+    }
+
+    public void setCreatedAt(int createdAt) {
+        this.createdAt = createdAt;
+    }
+
     public void setLastUpdated(int lastUpdated) {
         this.lastUpdated = lastUpdated;
     }
-
+    public void setCashBalance(int cashBalance) {
+        this.cashBalance = cashBalance;
+    }
        public int compareTo(User o) {
         return Integer.compare(this.id, o.id);
     }
