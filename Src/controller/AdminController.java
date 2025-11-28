@@ -1,12 +1,9 @@
 package controller;
 
-import repositories.UserRepository;
-import services.RankingService;
-import services.PortfolioService;
-import structure.User;
-import structure.Portfolio;
-
-import java.util.List;
+import repositories.*;
+import services.*;
+import structure.*;
+import java.util.*;
 
 
 public class AdminController {

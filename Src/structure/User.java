@@ -16,9 +16,8 @@ public class User implements Comparable<User>{
     public double initialCashDKK;
     public int createdAt;
     public int lastUpdated;
-    public int cashBalance;
 
-    public User (int id, int cashBalance, String fullName, String email, int birthDate, double initialCashDKK, int createdAt, int lastUpdated) {
+    public User (int id, String fullName, String email, int birthDate, double initialCashDKK, int createdAt, int lastUpdated) {
 
         this.id = id;
         this.fullName = fullName;
@@ -27,9 +26,8 @@ public class User implements Comparable<User>{
         this.initialCashDKK = initialCashDKK;
         this.createdAt = createdAt;
         this.lastUpdated = lastUpdated;
-        this.cashBalance = cashBalance;
     }
-    //har slettet void under vores getter, da getters aldrig skal stå i void siger google.
+    // har slettet void under vores getter, da getters aldrig skal stå i void siger google.
     public int getId() {
         return id;
     }
@@ -48,6 +46,9 @@ public class User implements Comparable<User>{
    public int getCreatedAt() {
        return createdAt;
    }
+
+
+
    public int getLastUpdated() {
         return lastUpdated;
    }
@@ -71,14 +72,7 @@ public class User implements Comparable<User>{
         this.birthDate = birthDate;
     }
 
-    public void setInitialCashDKK(double initialCashDKK) {
-        this.initialCashDKK = initialCashDKK;
-    }
-
-    public void setCreatedAt(int createdAt) {
-        this.createdAt = createdAt;
-    }
-
+   //Setter: Opdatere datoen for hvornår brugeren sidst blev ændret i systemet, så hvergang der bliver foretaget en handling så bliver den nye dato gemt i users.csv
     public void setLastUpdated(int lastUpdated) {
         this.lastUpdated = lastUpdated;
     }

@@ -1,6 +1,6 @@
 package structure;
 
-import java.util.Comparator;
+import java.util.*;
 
 public class Currency implements Comparable<Currency>{
 

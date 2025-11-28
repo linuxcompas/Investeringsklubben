@@ -1,5 +1,6 @@
 package repositories;
 
+import structure.Transaction;
 import structure.User;
 
 import java.io.*;
@@ -49,6 +50,29 @@ public class UserRepository {
 
         return users;
     }
+
+    public List<User> getUserIdLookup(int Id) {
+        List<User> allUsers = loadUsers();
+        List<User> userList = new ArrayList<>();
+
+        for (User u : allUsers) {
+            if (u.getId() == Id) {
+                userList.add(u);
+            }
+        }
+        return userList;
+    }
+
+    public User getUserByEmail(String email) {
+        List<User> allUsers = loadUsers();
+        for (User u : allUsers) {
+            if (u.getEmail().equalsIgnoreCase(email)) {
+                return u;
+            }
+        }
+        return null;
+    }
+
 
     public void saveUsers(List<User> users) {
 

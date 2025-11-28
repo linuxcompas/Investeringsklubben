@@ -48,6 +48,18 @@ public class TransactionRepository {
         return transactions;
     }
 
+    public List<Transaction> getTransactionByUserId(int userId) {
+        List<Transaction> allTransactions = loadTransactions();
+        List<Transaction> userTransactions = new ArrayList<>();
+
+        for (Transaction t : allTransactions) {
+            if (t.getUserId() == userId) {
+                userTransactions.add(t);
+            }
+        }
+        return userTransactions;
+    }
+
 
     public void saveTransactions(List<Transaction> transactions) {
 
