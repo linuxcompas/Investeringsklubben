@@ -2,8 +2,6 @@ package repositories;
 
 import structure.Transaction;
 import structure.User;
-import java.time.LocalDateTime;
-import java.time.format.*;
 import java.io.*;
 import java.util.*;
 
@@ -37,9 +35,10 @@ public class UserRepository {
                 double initialCash = Double.parseDouble(parts[4].replace("-", ""));
                 int createdAt = Integer.parseInt(parts[5].replace("-", ""));
                 int lastUpdated = Integer.parseInt(parts[6].replace("-", ""));
+                int cashBalance = Integer.parseInt(parts[7].replace("-", ""));;
 
                 User u = new User(id, fullName, email, birthDate,
-                        initialCash, createdAt, lastUpdated);
+                        initialCash, createdAt, lastUpdated, cashBalance);
 
                 users.add(u);
             }
@@ -78,7 +77,7 @@ public class UserRepository {
 
             try (BufferedWriter bw = new BufferedWriter(new FileWriter("Database/users.csv"))) {
 
-                bw.write("user_id;full_name;email;birth_date;initial_cash_DKK;created_at;last_updated");
+                bw.write("user_id;full_name;email;birth_date;initial_cash_DKK;created_at;last_updated; cashBalance");
                 bw.newLine();
 
                 for (User u : users) {
@@ -90,7 +89,8 @@ public class UserRepository {
                             String.valueOf(u.getBirthDate()),
                             String.valueOf(u.getInitialCashDKK()),
                             String.valueOf(u.getCreatedAt()),
-                            String.valueOf(u.getLastUpdated())
+                            String.valueOf(u.getLastUpdated()),
+                            String.valueOf(u.getCashBalance())
                     );
 
                     bw.write(line);
