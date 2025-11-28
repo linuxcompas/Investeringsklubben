@@ -10,20 +10,20 @@ import java.util.List;
 
 public class CurrencyRepository {
     String file = "Database/currency.csv";
-    public static void main(String[] args) {
-        CurrencyRepository repository = new CurrencyRepository();
-        List<Currency> currencies = repository.loadCurrency();
-    }
-
-
-
 
     public List<Currency> loadCurrency(){
         List<Currency> currencies = new ArrayList<>();
-        String line = "";
 
         try {
             BufferedReader br = new BufferedReader(new FileReader(file));
+            boolean isFirstLine = true;
+            String line = "";
+
+            while ((line = br.readLine()) != null) {
+                if (isFirstLine) {
+                    isFirstLine = false;
+                    continue;
+                }
 
                 String[] parts = line.split(";");
 
@@ -44,6 +44,7 @@ public class CurrencyRepository {
                     System.out.printf("%-8s", index);
                 }
                 System.out.println();
+            }
 
             br.close();
         } catch (FileNotFoundException e) {
