@@ -29,7 +29,7 @@ public class User implements Comparable<User>{
         this.lastUpdated = lastUpdated;
         this.cashBalance = cashBalance;
     }
-    // har slettet void under vores getter, da getters aldrig skal stå i void siger google.
+    //har slettet void under vores getter, da getters aldrig skal stå i void siger google.
     public int getId() {
         return id;
     }
