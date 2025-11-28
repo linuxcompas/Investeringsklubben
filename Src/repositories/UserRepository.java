@@ -2,7 +2,8 @@ package repositories;
 
 import structure.Transaction;
 import structure.User;
-
+import java.time.LocalDateTime;
+import java.time.format.*;
 import java.io.*;
 import java.util.*;
 
@@ -37,8 +38,7 @@ public class UserRepository {
                 int createdAt = Integer.parseInt(parts[5].replace("-", ""));
                 int lastUpdated = Integer.parseInt(parts[6].replace("-", ""));
 
-                User u = new User(
-                        id, fullName, email, birthDate,
+                User u = new User(id, fullName, email, birthDate,
                         initialCash, createdAt, lastUpdated);
 
                 users.add(u);
@@ -102,7 +102,29 @@ public class UserRepository {
                 e.printStackTrace();
         }
     }
-}
+
+    public void updateBalance(int id, double newBalance) {
+        List<User> users = loadUsers();
+
+        boolean found = false;
+        for (User u : users) {
+            if (u.getId() == id) {
+                u.setCashBalance((int) newBalance);
+                u.setLastUpdated(java.time.LocalDate.now().getYear()
+                        + java.time.LocalDate.now().getMonthValue()
+                        + java.time.LocalDate.now().getDayOfMonth());
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            throw new IllegalArgumentException("User with id" + id + " not found.");
+        }
+
+        saveUsers(users);
+        }
+    }
 
 
 
