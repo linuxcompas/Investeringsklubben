@@ -1,26 +1,48 @@
 package controller;
 
-/* Controller / validation
-Her fortæller vi java - hvad skal vi give videre til services?
-HUSK - Her tjekker vi om input er rigtigt.
+import repositories.UserRepository;
+import services.RankingService;
+import services.PortfolioService;
+import structure.User;
+import structure.Portfolio;
 
-Controller = risky code.
-Service antager at alt er i orden, fordi controlleren har godkendt det.
+import java.util.List;
 
-Low coupling
- */
 
 public class AdminController {
 
+    private final UserRepository userRepository;
+    private final RankingService rankingService;
+    private final PortfolioService portfolioService;
 
-    public void viewAllUsers(){
+    public AdminController(UserRepository userRepository,
+                           RankingService rankingService,
+                           PortfolioService portfolioService) {
+        this.userRepository = userRepository;
+        this.rankingService = rankingService;
+        this.portfolioService = portfolioService;
     }
 
-    public void viewRankings(){
-
+    //Henter alle brugere
+    public List<User> viewAllUsers() {
+        return userRepository.loadUsers();
     }
 
-    public void viewUserDetails(){
 
+    public List<User> viewRankings() {
+        List<User> users = userRepository.loadUsers();
+        return rankingService.rankUsersByTotalWealth(users);
+    }
+
+
+    public Portfolio viewUserDetails(int userId) {
+
+        User user = userRepository.getUserById(userId);
+
+        if (user == null) {
+            throw new IllegalArgumentException("User not found.");
+        }
+
+        return portfolioService.getPortfolio(user);
     }
 }
