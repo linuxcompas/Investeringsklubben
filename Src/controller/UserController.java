@@ -24,7 +24,7 @@ public class UserController {
             throw new IllegalArgumentException("Brugernavn kan ikke være tomt.");
 
         }
-        User user = Users.getId(username);
+        User user = userRepository.getId(username);
         if (user == null){
             throw new IllegalArgumentException("Bruger findes ikke: " + username);
         }
