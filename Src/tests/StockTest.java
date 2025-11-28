@@ -3,7 +3,7 @@ import repositories.StockmarketRepository;
 import structure.Stock;
 import java.util.*;
 
-public class StockTest {
+/*public class StockTest {
     public static void main(String[] args) {
 
         StockmarketRepository repo = new StockmarketRepository();
@@ -29,3 +29,4 @@ public class StockTest {
         }
     }
 }
+*/

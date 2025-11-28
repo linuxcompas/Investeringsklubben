@@ -3,7 +3,7 @@ import repositories.*;
 import structure.Bond;
 import java.util.*;
 
-public class BondsTest {
+/*public class BondsTest {
 
     public static void main(String[] args) {
 
@@ -30,3 +30,4 @@ public class BondsTest {
         }
     } // lets fucking goooo
 }
+*/
