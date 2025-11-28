@@ -1,5 +1,9 @@
 package services;
+import repositories.CurrencyRepository;
+import structure.Currency;
 import structure.*;
+
+import java.util.List;
 
 /* MATEMATIK / LOGIK
 Her fortæller vi java - hvordan regner vi valuta ud?
@@ -7,14 +11,30 @@ Her fortæller vi java - hvordan regner vi valuta ud?
 
 public class CurrencyService {
 
-    public void convertToDKK(){
+    private CurrencyRepository currencyRepository;
+    private List<Currency> currencies;
 
+    public CurrencyService() {
+        this.currencyRepository = new CurrencyRepository();
+        this.currencies = currencyRepository.loadCurrency();
     }
-    public void getRate(){
 
+    public double convertToDKK(double value, String currency) {
+        double rate = getRate(currency);
+        return value * rate;
     }
 
-    public void getValueInDKK(){
+    public double getRate(String currency) {
+        for (Currency c : currencies) {
+            if (c.getBaseCurrency().equalsIgnoreCase(currency)) {
+                return c.getRate();
+            }
+        }
+        throw new IllegalArgumentException("Valuta findes ikke: " + currency);
+    }
 
+    public void getValueInDKK() {
     }
 }
+
+
