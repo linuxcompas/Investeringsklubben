@@ -31,8 +31,6 @@ public class CurrencyService {
         throw new IllegalArgumentException("Valuta findes ikke: " + currency);
     }
 
-    public void getValueInDKK() {
-    }
 }
 
 

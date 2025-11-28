@@ -30,7 +30,7 @@ public class TransactionService {
             throw new IllegalArgumentException("Quantity must be positive.");
         }
 
-        double pricePerUnit = asset.getValue();
+        double pricePerUnit = asset.getPrice();
         String currency = asset.getCurrency();
 
         // total pris i assetets valuta

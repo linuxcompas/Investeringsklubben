@@ -7,4 +7,5 @@ package structure;
 public interface Asset{
     String getTicker();
     double getPrice();
+    String getCurrency();
 }
