@@ -9,7 +9,7 @@ public class TransactionTest {
     public static void main(String[] args) {
 
         TransactionRepository repo = new TransactionRepository();
-        List<Transaction> transactions = repo.loadtransactions();
+        List<Transaction> transactions = repo.loadTransactions();
 
         Collections.sort(transactions);
 
