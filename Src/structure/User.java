@@ -16,8 +16,9 @@ public class User implements Comparable<User>{
     public double initialCashDKK;
     public int createdAt;
     public int lastUpdated;
+    public int cashBalance;
 
-    public User (int id, String fullName, String email, int birthDate, double initialCashDKK, int createdAt, int lastUpdated) {
+    public User (int id, int cashBalance, String fullName, String email, int birthDate, double initialCashDKK, int createdAt, int lastUpdated) {
 
         this.id = id;
         this.fullName = fullName;
@@ -26,6 +27,7 @@ public class User implements Comparable<User>{
         this.initialCashDKK = initialCashDKK;
         this.createdAt = createdAt;
         this.lastUpdated = lastUpdated;
+        this.cashBalance = cashBalance;
     }
     // har slettet void under vores getter, da getters aldrig skal stå i void siger google.
     public int getId() {
@@ -46,8 +48,6 @@ public class User implements Comparable<User>{
    public int getCreatedAt() {
        return createdAt;
    }
-
-
 
    public int getLastUpdated() {
         return lastUpdated;
