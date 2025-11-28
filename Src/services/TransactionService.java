@@ -73,7 +73,7 @@ public class TransactionService {
             throw new IllegalArgumentException("Insufficient holdings to sell.");
         }
 
-        double pricePerUnit = asset.getValue();
+        double pricePerUnit = asset.getPrice();
         String currency = asset.getCurrency();
         double totalPrice = pricePerUnit * quantity;
         double totalPriceDKK = currencyService.convertToDKK(totalPrice, currency);
