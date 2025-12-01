@@ -40,7 +40,7 @@ public class TransactionService {
         double totalPriceDKK = currencyService.convertToDKK(totalPrice, currency);
 
         // tjek om brugeren har nok penge
-        if (user.getCashBalance() < totalPriceDKK) {
+        if (Portfolio.getbalance() < totalPriceDKK) {
             throw new IllegalArgumentException("Insufficient funds for this purchase.");
         }
 
@@ -73,14 +73,14 @@ public class TransactionService {
             throw new IllegalArgumentException("Insufficient holdings to sell.");
         }
 
-        double pricePerUnit = asset.getValue();
+        double pricePerUnit = asset.getPrice();
         String currency = asset.getCurrency();
         double totalPrice = pricePerUnit * quantity;
         double totalPriceDKK = currencyService.convertToDKK(totalPrice, currency);
 
         // opdater kontantbeholdning
-        double newBalance = user.getCashBalance() + totalPriceDKK;
-        user.setCashBalance(newBalance);
+        double newBalance = Portfolio.getCashBalance() + totalPriceDKK;
+        Portfolio.getCashBalance(newBalance);
         userRepository.updateBalance(user.getId(), newBalance);
 
         // opret transaktion og gem
