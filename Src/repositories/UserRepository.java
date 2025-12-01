@@ -97,7 +97,7 @@ public class UserRepository {
                             String.valueOf(u.getBirthDate()),
                             String.valueOf(u.getInitialCashDKK()),
                             String.valueOf(u.getCreatedAt()),
-                            String.valueOf(u.getLastUpdated()),
+                            String.valueOf(u.getLastUpdated())
                     );
 
                     bw.write(line);
