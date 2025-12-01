@@ -81,7 +81,7 @@ public class TransactionService {
         // opdater kontantbeholdning
         double newBalance = Portfolio.getCashBalance() + totalPriceDKK;
         Portfolio.getCashBalance(newBalance);
-        userRepository.updateBalance(user.getId(), newBalance);
+        Portfolio.updateBalance(user.getId(), newBalance);
 
         // opret transaktion og gem
         Transaction t = createTransaction(user.getId(), date, asset.getTicker(),
