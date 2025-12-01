@@ -48,7 +48,6 @@ public class User implements Comparable<User>{
    public int getCreatedAt() {
        return createdAt;
    }
-
    public int getLastUpdated() {
         return lastUpdated;
    }
