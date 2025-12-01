@@ -3,7 +3,6 @@ package structure;
 import java.util.*;
 
 public class Currency implements Comparable<Currency>{
-// hej
     /* INGEN MATEMATIK ELLER LOGIK -
        Her fortæller vi java:
        Hvad er en Currency?

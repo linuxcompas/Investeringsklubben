@@ -6,7 +6,7 @@ import java.util.List;
 /* MATEMATIK / LOGIK
 Her fortæller vi java - hvordan regner vi valuta ud?
  */
-// hej
+
 
 public class CurrencyService {
 
