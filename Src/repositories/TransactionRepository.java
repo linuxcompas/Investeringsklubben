@@ -20,7 +20,8 @@ public class TransactionRepository {
 
                 int id = Integer.parseInt(parts[0]);
                 int userId = Integer.parseInt(parts[1]);
-                int date = Integer.parseInt(parts[2]);
+                String dateString = parts[2].replace("-", "");
+                int date = Integer.parseInt(dateString);
                 String ticker = parts[3];
                 double price = Double.parseDouble(parts[4].replace(",", "."));
                 String currency = parts[5];
@@ -37,6 +38,7 @@ public class TransactionRepository {
                         orderType,
                         quantity
                 );
+
 
                 transactions.add(t);
             }

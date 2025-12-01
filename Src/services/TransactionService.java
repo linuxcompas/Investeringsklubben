@@ -4,7 +4,6 @@ import repositories.*;
 import structure.*;
 import java.util.*;
 
-
 public class TransactionService {
 
     private final TransactionRepository transactionRepository;
@@ -30,7 +29,7 @@ public class TransactionService {
             throw new IllegalArgumentException("Quantity must be positive.");
         }
 
-        double pricePerUnit = asset.getPrice();
+        double pricePerUnit = asset.getPrice();      // OK: Asset har getPrice()
         String currency = asset.getCurrency();
 
         // total pris i assetets valuta
@@ -44,10 +43,10 @@ public class TransactionService {
             throw new IllegalArgumentException("Insufficient funds for this purchase.");
         }
 
-        // opdater kontantbeholdning
-        double newBalance = user.getCashBalance() - totalPriceDKK;
+        // opdater kontantbeholdning (User.cashBalance er int, så vi caster)
+        int newBalance = (int) Math.round(user.getCashBalance() - totalPriceDKK);
         user.setCashBalance(newBalance);
-        userRepository.updateBalance(user.getId(), newBalance);
+        // userRepository.updateBalance(user.getId(), newBalance); // KUN når du har lavet metoden i UserRepository
 
         // opret transaktion og gem
         Transaction t = createTransaction(user.getId(), date, asset.getTicker(),
@@ -73,15 +72,16 @@ public class TransactionService {
             throw new IllegalArgumentException("Insufficient holdings to sell.");
         }
 
-        double pricePerUnit = asset.getValue();
+        // FIX: brug getPrice(), ikke getValue()
+        double pricePerUnit = asset.getPrice();
         String currency = asset.getCurrency();
         double totalPrice = pricePerUnit * quantity;
         double totalPriceDKK = currencyService.convertToDKK(totalPrice, currency);
 
-        // opdater kontantbeholdning
-        double newBalance = user.getCashBalance() + totalPriceDKK;
+        // opdater kontantbeholdning (int i User)
+        int newBalance = (int) Math.round(user.getCashBalance() + totalPriceDKK);
         user.setCashBalance(newBalance);
-        userRepository.updateBalance(user.getId(), newBalance);
+        // userRepository.updateBalance(user.getId(), newBalance); // igen: kun når metoden findes
 
         // opret transaktion og gem
         Transaction t = createTransaction(user.getId(), date, asset.getTicker(),
@@ -113,6 +113,7 @@ public class TransactionService {
 
     /**
      * Opretter Transaction-objekt med et automatisk ID.
+     * Her konverterer vi String-dato til int, fordi Transaction har int date.
      */
     private Transaction createTransaction(int userId,
                                           String date,
@@ -124,10 +125,13 @@ public class TransactionService {
 
         int nextId = getNextTransactionId();
 
+        // "01-03-2025" -> "01032025" -> 1032025
+        int dateInt = Integer.parseInt(date.replace("-", ""));
+
         return new Transaction(
                 nextId,
                 userId,
-                date,
+                dateInt,
                 ticker,
                 price,
                 currency,

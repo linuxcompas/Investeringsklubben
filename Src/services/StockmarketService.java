@@ -1,4 +1,5 @@
 package services;
+import repositories.StockmarketRepository;
 import structure.*;
 import java.util.*;
 
@@ -39,7 +40,7 @@ public class StockmarketService {
                 if (aVal < bVal) return 1;
                 if (aVal > bVal) return -1;
                 return 0;
-            }
+            });
             return stocks;
 
         }
@@ -52,9 +53,8 @@ public class StockmarketService {
             if (currency.equalsIgnoreCase("DKK")) {
                 return price;
             }
-            double rate = currencyService.getRate(String currency);
+            double rate = currencyService.getRate(currency);
 
             return price * rate;
         }
     }
-}
