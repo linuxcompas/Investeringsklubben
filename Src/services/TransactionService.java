@@ -68,7 +68,7 @@ public class TransactionService {
         }
 
         // tjek hvor mange brugeren har af dette asset baseret på tidligere handler
-        int currentHolding = getHoldingForUserAndTicker(user.getId(), asset.getTicker());
+        int currentHolding = Portfolio.getHoldings(user.getId(), asset.getTicker());
         if (currentHolding < quantity) {
             throw new IllegalArgumentException("Insufficient holdings to sell.");
         }
@@ -89,27 +89,27 @@ public class TransactionService {
 
         saveTransaction(t);
     }
-
-    /**
-     * Hjælper med at udregne hvor mange aktier/units brugeren har
-     * af et givet ticker baseret på transactions.csv
-     */
-    private int getHoldingForUserAndTicker(int userId, String ticker) {
-        List<Transaction> all = transactionRepository.loadTransactions();
-        int holding = 0;
-
-        for (Transaction t : all) {
-            if (t.getUserId() == userId && t.getTicker().equalsIgnoreCase(ticker)) {
-                if ("buy".equalsIgnoreCase(t.getOrderType())) {
-                    holding += t.getQuantity();
-                } else if ("sell".equalsIgnoreCase(t.getOrderType())) {
-                    holding -= t.getQuantity();
-                }
-            }
-        }
-
-        return holding;
-    }
+//
+//    /**
+//     * Hjælper med at udregne hvor mange aktier/units brugeren har
+//     * af et givet ticker baseret på transactions.csv
+//     */
+//    private int getHoldingForUserAndTicker(int userId, String ticker) {
+//        List<Transaction> all = transactionRepository.loadTransactions();
+//        int holding = 0;
+//
+//        for (Transaction t : all) {
+//            if (t.getUserId() == userId && t.getTicker().equalsIgnoreCase(ticker)) {
+//                if ("buy".equalsIgnoreCase(t.getOrderType())) {
+//                    holding += t.getQuantity();
+//                } else if ("sell".equalsIgnoreCase(t.getOrderType())) {
+//                    holding -= t.getQuantity();
+//                }
+//            }
+//        }
+//
+//        return holding;
+//    }
 
     /**
      * Opretter Transaction-objekt med et automatisk ID.
