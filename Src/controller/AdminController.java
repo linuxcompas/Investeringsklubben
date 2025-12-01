@@ -40,6 +40,6 @@ public class AdminController {
             throw new IllegalArgumentException("User not found.");
         }
 
-        return portfolioService.getPortfolio(user);
+        return portfolioService.buildPortfolio(user);
     }
 }

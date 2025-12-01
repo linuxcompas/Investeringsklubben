@@ -110,8 +110,13 @@ public class Transaction implements Comparable<Transaction> {
      */
     @Override
     public int compareTo(Transaction t) {
-        return this.orderType.compareTo(t.orderType);
+        int dateCompare = Integer.compare(this.date, t.date);
+        if (dateCompare != 0) {
+            return dateCompare;
+        }
+        return Integer.compare(this.id, t.id);
     }
+
 
     @Override
     public String toString() {

@@ -72,6 +72,15 @@ public class UserRepository {
         return null;
     }
 
+    public User getUserById(int id) {
+        List<User> allUsers = loadUsers();
+        for (User u : allUsers) {
+            if (u.getId() == id) {
+                return u;
+            }
+        }
+        return null; // hvis ingen bruger findes
+    }
 
     public void saveUsers(List<User> users) {
 
