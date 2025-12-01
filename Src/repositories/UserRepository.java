@@ -35,10 +35,9 @@ public class UserRepository {
                 double initialCash = Double.parseDouble(parts[4].replace("-", ""));
                 int createdAt = Integer.parseInt(parts[5].replace("-", ""));
                 int lastUpdated = Integer.parseInt(parts[6].replace("-", ""));
-                int cashBalance = Integer.parseInt(parts[7].replace("-", ""));;
 
                 User u = new User(id, fullName, email, birthDate,
-                        initialCash, createdAt, lastUpdated, cashBalance);
+                        initialCash, createdAt, lastUpdated);
 
                 users.add(u);
             }
@@ -98,8 +97,7 @@ public class UserRepository {
                             String.valueOf(u.getBirthDate()),
                             String.valueOf(u.getInitialCashDKK()),
                             String.valueOf(u.getCreatedAt()),
-                            String.valueOf(u.getLastUpdated()),
-                            String.valueOf(u.getCashBalance())
+                            String.valueOf(u.getLastUpdated())
                     );
 
                     bw.write(line);
@@ -112,27 +110,7 @@ public class UserRepository {
         }
     }
 
-    public void updateBalance(int id, double newBalance) {
-        List<User> users = loadUsers();
 
-        boolean found = false;
-        for (User u : users) {
-            if (u.getId() == id) {
-                u.setCashBalance((int) newBalance);
-                u.setLastUpdated(java.time.LocalDate.now().getYear()
-                        + java.time.LocalDate.now().getMonthValue()
-                        + java.time.LocalDate.now().getDayOfMonth());
-                found = true;
-                break;
-            }
-        }
-
-        if (!found) {
-            throw new IllegalArgumentException("User with id" + id + " not found.");
-        }
-
-        saveUsers(users);
-        }
     }
    //hej aa
 
