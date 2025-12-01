@@ -86,4 +86,4 @@ public String toString() {
           return id + ";" + fullName + ";" + email + ";" + birthDate + ";" + initialCashDKK + ";" + createdAt + ";" + lastUpdated;
       }
  }
-//hej
+//hej aa
