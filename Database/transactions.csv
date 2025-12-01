@@ -1,4 +1,4 @@
-﻿id;user_id;date;ticker;price;currency;order_type;quantity
+id;user_id;date;ticker;price;currency;order_type;quantity
 1;1;1032025;NOVO-B;710,5;DKK;buy;20
 2;2;2032025;VWS;197,0;DKK;buy;50
 3;3;2032025;DANSKE;186,0;DKK;buy;30
