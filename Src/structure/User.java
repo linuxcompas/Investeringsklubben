@@ -18,13 +18,7 @@ public class User implements Comparable<User>{
     public int lastUpdated;
     public int cashBalance;
 
-    public User (int id,
-                 String fullName,
-                 String email,
-                 int birthDate,
-                 double initialCashDKK,
-                 int createdAt,
-                 int lastUpdated) {
+    public User (int id, int cashBalance, String fullName, String email, int birthDate, double initialCashDKK, int createdAt, int lastUpdated) {
 
         this.id = id;
         this.fullName = fullName;
