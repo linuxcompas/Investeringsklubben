@@ -23,28 +23,29 @@ public class PortfolioService {
 
     public Portfolio buildPortfolio(User user) {
         Portfolio portfolio = new Portfolio(user);
-
-        List<Transaction> userTransactions = transactionRepository.getTransactionByUserId(user.getId());
+        List<Transaction> userTransactions =
+                transactionRepository.getTransactionByUserId(user.getId());
 
         for (Transaction t : userTransactions) {
 
-            if (t.getOrderType().equalsIgnoreCase("BUY")) {
+            double valueDKK = currencyService.convertToDKK(
+                    t.getPrice() * t.getQuantity(),
+                    t.getCurrency()
+            );
+
+            if (t.getOrderType().equalsIgnoreCase("buy")) {
+
                 portfolio.addToHolding(t.getTicker(), t.getQuantity());
+                portfolio.setCashBalance(portfolio.getCashBalance() - valueDKK);
 
-                double costInDKK = convertToDKK(t.getPrice() * t.getQuantity(), t.getCurrency());
-                portfolio.setCashBalance(portfolio.getCashBalance() + costInDKK);
+            } else if (t.getOrderType().equalsIgnoreCase("sell")) {
 
-            } else if (t.getOrderType().equalsIgnoreCase("SELL")) {
                 portfolio.addToHolding(t.getTicker(), -t.getQuantity());
-
-                double revenueInDKK = convertToDKK(t.getPrice() * t.getQuantity(), t.getCurrency());
-                portfolio.setCashBalance(portfolio.getCashBalance() + revenueInDKK);
+                portfolio.setCashBalance(portfolio.getCashBalance() + valueDKK);
             }
         }
-        return portfolio;
-    }
 
-    private double convertToDKK(double value, String currency) {
-        return currencyService.convertToDKK(value, currency);
+        return portfolio;
+
     }
 }

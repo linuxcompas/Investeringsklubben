@@ -1,6 +1,7 @@
 package structure;
 
 import java.util.*;
+import services.*;
 
 public class Portfolio implements Comparable<Portfolio>{
 
@@ -14,41 +15,97 @@ public class Portfolio implements Comparable<Portfolio>{
     Vi regner det ikke endnu.
      */
 
-    private User owner;
-    private Map<String, Integer> holdings;
+    private final User owner;
+    private Map<String, Integer> holdings = new HashMap<>();
     private double cashBalance;
-
 
     // constructor
     public Portfolio (User owner) {
         this.owner = owner;
-        this.holdings = new HashMap<>();
         this.cashBalance = owner.getInitialCashDKK();
+        this.holdings = new HashMap<>();
     }
 
 
     // getters
     public User getOwner() { return owner; }
-    public Map<String, Integer> getHoldings() { return new  HashMap<>(holdings); }
     public double getCashBalance() { return cashBalance; }
-    public int getQuantity(String ticker) {
-        return holdings.getOrDefault(ticker, 0);}
-    public Set<String> getTickers() { return holdings.keySet(); }
+    public int getHolding(String ticker){
+        return holdings.getOrDefault(ticker, 0);
+    }
+    public int getUserId() { return owner.getId(); }
+    public String getEmail() { return owner.getEmail(); }
 
 
-    // setters
-    public void setHolding(String ticker, int quantity) {
-        if (quantity > 0) {
-            holdings.put(ticker, quantity);
-        } else  {
-            holdings.remove(ticker);}}
     public void setCashBalance(double cashBalance) { this.cashBalance = cashBalance; }
 
-
     // hjælpemetode -> tilføjer til portfolio ud fra ticker
-    public void addToHolding(String ticker, int quantity) {
-        holdings.put(ticker, holdings.getOrDefault(ticker, 0) + quantity);
+    public int getHoldingForTicker(String ticker, List<Transaction> transactions) {
+
+        int total = 0;
+
+                for (Transaction t : transactions) {
+                    if (t.getUserId() != owner.getId()) continue;
+                    if (!t.getTicker().equalsIgnoreCase(ticker)) continue;
+
+                    switch (t.getOrderType().toLowerCase()) {
+                        case "buy" -> total += t.getQuantity();
+                        case "sell" -> total -= t.getQuantity();
+                    }
+                }
+                return total;
     }
+
+    public Map<String, Integer> getAllHoldings(List<Transaction> transactions){
+
+        Map<String, Integer> holdings = new HashMap<>();
+
+        for (Transaction t: transactions) {
+            if (t.getUserId() != owner.getId()) continue;
+
+            int qty = holdings.getOrDefault(t.getTicker(), 0);
+
+            if (t.getOrderType().equalsIgnoreCase("buy")) {
+                qty += t.getQuantity();
+            } else if (t.getOrderType().equalsIgnoreCase("sell")) {
+                qty -= t.getQuantity();
+            }
+
+            if (qty > 0) holdings.put(t.getTicker(), qty);
+            else holdings.remove(t.getTicker());
+        }
+        return holdings;
+    }
+
+    public double getCashBalance(List<Transaction> transactions, CurrencyService currencyService){
+
+        double balance = owner.getInitialCashDKK();
+
+        for (Transaction t : transactions) {
+            if (t.getUserId() != owner.getId()) continue;
+
+            // samlet pris i gældende valuta
+            double total = t.getPrice() * t.getQuantity();
+
+            // omregner til dkk
+            double totalDKK = currencyService.convertToDKK(total, t.getCurrency());
+
+            if (t.getOrderType().equalsIgnoreCase("buy")) {
+                balance -= totalDKK;
+            } else if (t.getOrderType().equalsIgnoreCase("sell")) {
+                balance += totalDKK;
+            }
+        }
+
+        return balance;
+    }
+
+    public void addToHolding(String ticker, int amount){
+        int current = holdings.getOrDefault(ticker, 0);
+        holdings.put(ticker, current+amount);
+    }
+
+
 
     public int compareTo(Portfolio o) { // til at fortælle hvordan vi sorterer ranglister
         return Integer.compare(this.owner.getId(), o.owner.getId());
@@ -58,8 +115,8 @@ public class Portfolio implements Comparable<Portfolio>{
     public String toString() {
     return "Portfolio {" +
     "owner=" + owner.getFullName() +
-    ", holdings=" + holdings +
-    ", cashBalance=" + cashBalance +
+    ", holdings="  +
+    ", cashBalance="  +
     "}";
     }
 }

@@ -9,13 +9,13 @@ public class User implements Comparable<User>{
     Vi skal ikke have nogen logik herinde.
      */
 //
-    public int id; // kommentar, har ændret first/last name til FullName*
-    public String fullName;
-    public String email;
-    public int birthDate;
-    public double initialCashDKK;
-    public int createdAt;
-    public int lastUpdated;
+    private int id; // kommentar, har ændret first/last name til FullName*
+    private String fullName;
+    private String email;
+    private int birthDate;
+    private double initialCashDKK;
+    private int createdAt;
+    private int lastUpdated;
 
     public User (int id, String fullName, String email, int birthDate, double initialCashDKK, int createdAt, int lastUpdated) {
 

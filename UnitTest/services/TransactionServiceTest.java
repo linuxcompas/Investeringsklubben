@@ -1,101 +1,117 @@
 package services;
 
-import org.junit.jupiter.api.Test;
-import repositories.TransactionRepository;
-import repositories.UserRepository;
-import structure.Asset;
-import structure.User;
+import org.junit.jupiter.api.*;
+import structure.*;
+import repositories.*;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class TransactionServiceTest {
+class MockTransactionRepo extends TransactionRepository {
+    private List<Transaction> transactions = new ArrayList<>();
 
-    // Lille test-implementation af Asset til unit tests
-    static class TestAsset implements Asset {
-        private final String ticker;
-        private final double price;
-        private final String currency;
+    @Override
+    public List<Transaction> loadTransactions() {
+        return transactions;
+    }
 
-        public TestAsset(String ticker, double price, String currency) {
-            this.ticker = ticker;
-            this.price = price;
-            this.currency = currency;
-        }
+    @Override
+    public void saveTransactions(List<Transaction> all) {
+        transactions = all;
+    }
+}
 
-        @Override
-        public String getTicker() {
-            return ticker;
-        }
+class MockCurrencyService extends CurrencyService {
+    @Override
+    public double convertToDKK(double value, String currency) {
+        return value; // 1:1 conversion for testing
+    }
+}
 
-        @Override
-        public double getPrice() {
-            return price;
-        }
+public class TransactionServiceTest {
 
-        @Override
-        public String getCurrency() {
-            return currency;
-        }
+    private TransactionService transactionService;
+    private User user;
+    private MockTransactionRepo transactionRepo;
+
+    @BeforeEach
+    void setup() {
+        user = new User(1, "Alice", "alice@example.com",
+                20000101, 100000.0, 20251101, 20251101);
+        transactionRepo = new MockTransactionRepo();
+        transactionService = new TransactionService(transactionRepo, null, new MockCurrencyService());
     }
 
     @Test
-    void buyAsset_reducesCashBalance() {
+    void testBuyAssetCreatesTransaction() {
+        Asset testAsset = new Asset() {
+            public String getTicker() { return "TEST"; }
+            public double getPrice() { return 50.0; }
+            public String getCurrency() { return "DKK"; }
+        };
 
-        TransactionService service = new TransactionService(
-                new TransactionRepository(),
-                new UserRepository("Database/users.csv"),
-                new CurrencyService()   // går ud fra du har en no-arg constructor
-        );
+        // Buy twice
+        transactionService.buyAsset(user, testAsset, 5, 20251101);
+        transactionService.buyAsset(user, testAsset, 10, 20251201);
 
-        // Start-user med 10.000 DKK
-        User user = new User(
-                1,
-                "Test Bruger",
-                "test@test.dk",
-                20000101,
-                10000.0,
-                20250101,
-                20250101
-        );
+        List<Transaction> txs = transactionRepo.loadTransactions();
+        assertEquals(2, txs.size());
 
-        // Asset i DKK for at gøre testen simpel
-        Asset asset = new TestAsset("AAPL", 1000.0, "DKK");
-
-        service.buyAsset(user, asset, 5, "01-03-2025");
-
-        // Efter køb: kontantbeholdning skal være mindre end start
-        assertTrue(user.getCashBalance() < 10000);
+        assertEquals("buy", txs.get(0).getOrderType());
+        assertEquals(5, txs.get(0).getQuantity());
+        assertEquals("buy", txs.get(1).getOrderType());
+        assertEquals(10, txs.get(1).getQuantity());
     }
 
     @Test
-    void sellAsset_increasesCashBalance() {
+    void testSellAssetThrowsIfInsufficientQuantity() {
+        Asset testAsset = new Asset() {
+            public String getTicker() { return "TEST"; }
+            public double getPrice() { return 50.0; }
+            public String getCurrency() { return "DKK"; }
+        };
 
-        TransactionService service = new TransactionService(
-                new TransactionRepository(),
-                new UserRepository("Database/users.csv"),
-                new CurrencyService()
-        );
+        // No buy yet
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            transactionService.sellAsset(user, testAsset, 1, 20251101);
+        });
+        assertTrue(exception.getMessage().contains("Insufficient asset quantity"));
+    }
 
-        // Start-user med 5.000 DKK
-        User user = new User(
-                2,
-                "Test Bruger 2",
-                "test2@test.dk",
-                20000101,
-                5000.0,
-                20250101,
-                20250101
-        );
+    @Test
+    void testSellAssetAfterBuy() {
+        Asset testAsset = new Asset() {
+            public String getTicker() { return "TEST"; }
+            public double getPrice() { return 50.0; }
+            public String getCurrency() { return "DKK"; }
+        };
 
-        // Det her kræver egentlig at brugeren allerede har nogle AAPL-aktier i CSV,
-        // men vi tester KUN at metoden kører og opdaterer balancen.
-        Asset asset = new TestAsset("AAPL", 500.0, "DKK");
+        // Buy first
+        transactionService.buyAsset(user, testAsset, 10, 20251101);
 
-        // Her vil der kastes exception hvis holdings < 2, så i en rigtig test
-        // bør du mocke getHoldingForUserAndTicker eller bygge data først.
-        // Lad os antage at CSV'en har nok.
-        service.sellAsset(user, asset, 2, "01-03-2025");
+        // Sell some
+        transactionService.sellAsset(user, testAsset, 5, 20251201);
 
-        assertTrue(user.getCashBalance() > 5000);
+        List<Transaction> txs = transactionRepo.loadTransactions();
+        assertEquals(2, txs.size());
+
+        Transaction sellTx = txs.get(1);
+        assertEquals("sell", sellTx.getOrderType());
+        assertEquals(5, sellTx.getQuantity());
+    }
+
+    @Test
+    void testBuyAssetInsufficientFunds() {
+        Asset expensiveAsset = new Asset() {
+            public String getTicker() { return "EXP"; }
+            public double getPrice() { return 1_000_000.0; }
+            public String getCurrency() { return "DKK"; }
+        };
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            transactionService.buyAsset(user, expensiveAsset, 1, 20251101);
+        });
+
+        assertTrue(exception.getMessage().contains("Insufficient funds"));
     }
 }

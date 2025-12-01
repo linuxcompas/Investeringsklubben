@@ -25,33 +25,34 @@ public class TransactionService {
      * - Opdaterer kontantbeholdning
      * - Opretter og gemmer en Transaction i CSV
      */
-    public void buyAsset(User user, Asset asset, int quantity, String date) {
+    public void buyAsset(User user, Asset asset, int quantity, int date) {
         if (quantity <= 0) {
             throw new IllegalArgumentException("Quantity must be positive.");
         }
 
+        Portfolio currentPortfolio = new PortfolioService(
+                transactionRepository,
+                null,
+                currencyService
+        ).buildPortfolio(user);
+
         double pricePerUnit = asset.getPrice();
-        String currency = asset.getCurrency();
-
-        // total pris i assetets valuta
         double totalPrice = pricePerUnit * quantity;
+        double totalPriceDKK = currencyService.convertToDKK(totalPrice, asset.getCurrency());
 
-        // konverter til DKK
-        double totalPriceDKK = currencyService.convertToDKK(totalPrice, currency);
-
-        // tjek om brugeren har nok penge
-        if (Portfolio.getCashBalance() < totalPriceDKK) {
-            throw new IllegalArgumentException("Insufficient funds for this purchase.");
+        if (currentPortfolio.getCashBalance() < totalPriceDKK) {
+            throw new IllegalArgumentException("Insufficient funds.");
         }
 
-        // opdater kontantbeholdning
-        double newBalance = Portfolio.getCashBalance() - totalPriceDKK;
-        Portfolio.setCashBalance(newBalance);
-        Portfolio.updateBalance(user.getId(), newBalance);
-
-        // opret transaktion og gem
-        Transaction t = createTransaction(user.getId(), date, asset.getTicker(),
-                pricePerUnit, currency, "buy", quantity);
+        Transaction t = createTransaction(
+                user.getId(),
+                date,
+                asset.getTicker(),
+                pricePerUnit,
+                asset.getCurrency(),
+                "buy",
+                quantity
+        );
 
         saveTransaction(t);
     }
@@ -62,31 +63,27 @@ public class TransactionService {
      * - Opdaterer kontantbeholdning
      * - Opretter og gemmer en Transaction i CSV
      */
-    public void sellAsset(User user, Asset asset, int quantity, String date) {
+    public void sellAsset(User user, Asset asset, int quantity, int date) {
         if (quantity <= 0) {
             throw new IllegalArgumentException("Quantity must be positive.");
         }
 
-        // tjek hvor mange brugeren har af dette asset baseret på tidligere handler
         int currentHolding = getHoldingForUserAndTicker(user.getId(), asset.getTicker());
         if (currentHolding < quantity) {
-            throw new IllegalArgumentException("Insufficient holdings to sell.");
+            throw new IllegalArgumentException("Insufficient asset quantity.");
         }
 
         double pricePerUnit = asset.getPrice();
-        String currency = asset.getCurrency();
-        double totalPrice = pricePerUnit * quantity;
-        double totalPriceDKK = currencyService.convertToDKK(totalPrice, currency);
 
-        // opdater kontantbeholdning
-        double newBalance = Portfolio.getCashBalance() + totalPriceDKK;
-        Portfolio.getCashBalance(newBalance);
-        Portfolio.updateBalance(user.getId(), newBalance);
-
-        // opret transaktion og gem
-        Transaction t = createTransaction(user.getId(), date, asset.getTicker(),
-                pricePerUnit, currency, "sell", quantity);
-
+        Transaction t = createTransaction(
+                user.getId(),
+                date,
+                asset.getTicker(),
+                pricePerUnit,
+                asset.getCurrency(),
+                "sell",
+                quantity
+        );
         saveTransaction(t);
     }
 
@@ -115,7 +112,7 @@ public class TransactionService {
      * Opretter Transaction-objekt med et automatisk ID.
      */
     private Transaction createTransaction(int userId,
-                                          String date,
+                                          int date,
                                           String ticker,
                                           double price,
                                           String currency,
