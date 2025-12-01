@@ -40,14 +40,14 @@ public class TransactionService {
         double totalPriceDKK = currencyService.convertToDKK(totalPrice, currency);
 
         // tjek om brugeren har nok penge
-        if (Portfolio.getbalance() < totalPriceDKK) {
+        if (Portfolio.getCashBalance() < totalPriceDKK) {
             throw new IllegalArgumentException("Insufficient funds for this purchase.");
         }
 
         // opdater kontantbeholdning
-        double newBalance = user.getCashBalance() - totalPriceDKK;
-        user.setCashBalance(newBalance);
-        userRepository.updateBalance(user.getId(), newBalance);
+        double newBalance = Portfolio.getCashBalance() - totalPriceDKK;
+        Portfolio.setCashBalance(newBalance);
+        Portfolio.updateBalance(user.getId(), newBalance);
 
         // opret transaktion og gem
         Transaction t = createTransaction(user.getId(), date, asset.getTicker(),
