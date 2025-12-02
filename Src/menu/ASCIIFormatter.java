@@ -10,6 +10,7 @@ public class ASCIIFormatter {
 
     public void formatStocks(){
     }
+
     public void formatPortfolio(Portfolio portfolio, List<Transaction> transactions, CurrencyService currencyService) {
         System.out.println("=== Portfolio Summary ===");
         double cashBalance = portfolio.getCashBalance(transactions, currencyService);
