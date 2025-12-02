@@ -76,5 +76,4 @@ public class ASCIIFormatter {
     }
     public void formatUserMenu(){
     }
-
 }

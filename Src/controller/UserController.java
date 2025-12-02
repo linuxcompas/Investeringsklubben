@@ -14,15 +14,13 @@ Low coupling
  */
 
 
-
-
 public class UserController {
     public UserRepository userRepository;
-    public UserController(){
+    public UserController() {
         this.userRepository = new UserRepository("Database/users.csv");
     }
     public User login (String email, String password) {
-        if (email == null || email.isEmpty()){
+        if (email == null || email.isEmpty()) {
             throw new IllegalArgumentException("Email kan ikke være tomt.");
         }
         User user = userRepository.getUserByEmail(email);
