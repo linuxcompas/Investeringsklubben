@@ -48,3 +48,4 @@ public class SimpleAsciiFormatter {
         if (d == null) return 0.0;
         return d;
 }
+//hej
