@@ -71,8 +71,49 @@ public class ASCIIFormatter {
         System.out.println();
     }
 
+    public static Object formatLoginScreen(UserController userController,
+                                           AdminController adminController) {
 
-    public void formatLoginError(){
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("====================================");
+        System.out.println("           VELKOMMEN TIL KLUBBEN       ");
+        System.out.println("====================================");
+        System.out.println();
+        System.out.println("              LOGIN MENU            ");
+        System.out.println("------------------------------------");
+        System.out.println("  Indtast dit email/username under  ");
+        System.out.println();
+        System.out.println("------------------------------------");
+        System.out.println();
+
+        System.out.print("Username/Email: ");
+        String username = sc.nextLine();
+
+        System.out.print("Password: ");
+        String password = sc.nextLine();
+
+        System.out.println();
+        System.out.println("------------------------------------");
+
+        // 1. Check admin login:
+        if (adminController.adminLogin(username, password)) {
+            System.out.println("ADMIN LOGIN SUCCESSFUL");
+            System.out.println("------------------------------------");
+            return "admin";
+        }
+
+        // 2. Otherwise attempt regular user login:
+        try {
+            User u = userController.login(username, password);
+            System.out.println("USER LOGIN SUCCESSFUL");
+            System.out.println("------------------------------------");
+            return u;
+        } catch (Exception e) {
+            System.out.println("LOGIN FAILED: " + e.getMessage());
+            System.out.println("------------------------------------");
+            return null;
+        }
     }
     public void formatUserMenu(){
     }
