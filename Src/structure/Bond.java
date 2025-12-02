@@ -92,6 +92,9 @@ public class Bond implements Asset, Comparable<Bond> {
     public static Comparator<Bond> sortByYieldAsc =
             Comparator.comparingDouble(Bond::getCouponRate);
 
+    public static Comparator<Bond> sortByMaturityAsc =
+    Comparator.comparingDouble(Bond::getMaturityDate);
+
     // afkast faldende
     public static Comparator<Bond> sortByYieldDesc =
             Comparator.comparingDouble(Bond::getCouponRate).reversed();
