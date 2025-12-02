@@ -31,6 +31,47 @@ public class ASCIIFormatter {
         }
     }
 
+
+    public static void formatBuyTransaction(Transaction t, CurrencyService currencyService) {
+        double totalInAssetCurrency = t.getPrice() * t.getQuantity();
+        double totalInDKK = currencyService.convertToDKK(totalInAssetCurrency, t.getCurrency());
+
+        System.out.println("=== BUY TRANSACTION ===");
+        System.out.println("+-------------------------------+");
+        System.out.printf ("| Transaction ID : %-12d |%n", t.getId());
+        System.out.printf ("| User ID        : %-12d |%n", t.getUserId());
+        System.out.printf ("| Date           : %-12d |%n", t.getDate());
+        System.out.printf ("| Ticker         : %-12s |%n", t.getTicker());
+        System.out.printf ("| Quantity       : %-12d |%n", t.getQuantity());
+        System.out.printf ("| Price / unit   : %-12.2f |%n", t.getPrice());
+        System.out.printf ("| Currency       : %-12s |%n", t.getCurrency());
+        System.out.printf ("| Total (DKK)    : %-12.2f |%n", totalInDKK);
+        System.out.println("+-------------------------------+");
+        System.out.println("Status: BUY completed successfully");
+        System.out.println();
+    }
+
+
+    public static void formatSellTransaction(Transaction t, CurrencyService currencyService) {
+        double totalInAssetCurrency = t.getPrice() * t.getQuantity();
+        double totalInDKK = currencyService.convertToDKK(totalInAssetCurrency, t.getCurrency());
+
+        System.out.println("=== SELL TRANSACTION ===");
+        System.out.println("+-------------------------------+");
+        System.out.printf ("| Transaction ID : %-12d |%n", t.getId());
+        System.out.printf ("| User ID        : %-12d |%n", t.getUserId());
+        System.out.printf ("| Date           : %-12d |%n", t.getDate());
+        System.out.printf ("| Ticker         : %-12s |%n", t.getTicker());
+        System.out.printf ("| Quantity       : %-12d |%n", t.getQuantity());
+        System.out.printf ("| Price / unit   : %-12.2f |%n", t.getPrice());
+        System.out.printf ("| Currency       : %-12s |%n", t.getCurrency());
+        System.out.printf ("| Total (DKK)    : %-12.2f |%n", totalInDKK);
+        System.out.println("+-------------------------------+");
+        System.out.println("Status: SELL completed successfully");
+        System.out.println();
+    }
+
+
     public void formatLoginError(){
     }
     public void formatUserMenu(){
