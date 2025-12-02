@@ -2,6 +2,8 @@ package services;
 
 import repositories.*;
 import structure.*;
+import utility.DateTime;
+
 import java.util.*;
 
 
@@ -25,7 +27,8 @@ public class TransactionService {
      * - Opdaterer kontantbeholdning
      * - Opretter og gemmer en Transaction i CSV
      */
-    public void buyAsset(User user, Asset asset, int quantity, int date) {
+    public void buyAsset(User user, Asset asset, int quantity) {
+        int date = DateTime.todayAsInt();
         if (quantity <= 0) {
             throw new IllegalArgumentException("Quantity must be positive.");
         }
@@ -63,7 +66,8 @@ public class TransactionService {
      * - Opdaterer kontantbeholdning
      * - Opretter og gemmer en Transaction i CSV
      */
-    public void sellAsset(User user, Asset asset, int quantity, int date) {
+    public void sellAsset(User user, Asset asset, int quantity) {
+        int date = DateTime.todayAsInt();
         if (quantity <= 0) {
             throw new IllegalArgumentException("Quantity must be positive.");
         }

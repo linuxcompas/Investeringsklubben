@@ -79,4 +79,13 @@ import java.time.format.DateTimeParseException;
         public LocalDate toLocalDate() {
             return date;
         }
+
+        public int toInt() {
+            return Integer.parseInt(date.format(DateTimeFormatter.ofPattern("ddMMyyyy")));
+        }
+
+
+        public static int todayAsInt() {
+            return Integer.parseInt(LocalDate.now().format(DateTimeFormatter.ofPattern("ddMMyyyy")));
+        }
     }
