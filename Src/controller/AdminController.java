@@ -42,4 +42,8 @@ public class AdminController {
 
         return portfolioService.buildPortfolio(user);
     }
+    public boolean adminLogin(String username, String password) {
+        return "admin".equals(username) && "admin".equals(password);
+    }
+
 }

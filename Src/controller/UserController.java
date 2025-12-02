@@ -1,6 +1,9 @@
 package controller;
 import repositories.*;
+import services.*;
 import structure.*;
+
+import java.util.List;
 
 
 /* Controller / validation
@@ -17,11 +20,17 @@ Low coupling
 
 
 public class UserController {
-    public UserRepository userRepository;
-    public UserController(){
+    private final UserRepository userRepository;
+    private final RankingService rankingService;
+
+    public UserController(UserRepository userRepository,
+                          RankingService rankingService){
         this.userRepository = new UserRepository("Database/users.csv");
+        this.rankingService = rankingService;
+
     }
     public User login (String email, String password) {
+
         if (email == null || email.isEmpty()){
             throw new IllegalArgumentException("Email kan ikke være tomt.");
         }
@@ -37,5 +46,10 @@ public class UserController {
             throw new IllegalArgumentException("Forkert password.");
         }
         return user;
+    }
+
+    public List<User> viewRankings() {
+        List<User> users = userRepository.loadUsers();
+        return rankingService.rankUsersByTotalWealth(users);
     }
 }

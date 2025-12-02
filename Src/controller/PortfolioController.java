@@ -79,27 +79,27 @@ public class PortfolioController {
     Køber Asset til bruger -> uddelegerer til TransactionService
      */
 
-    public void buyAsset(User user, Asset asset, int quantity, int date){
+    public void buyAsset(User user, Asset asset, int quantity){
         if (user == null || asset == null){
             throw new IllegalArgumentException("User or asset can't be null");
         }
         if (quantity <= 0){
             throw new IllegalArgumentException("Quantity can't be negative");
         }
-        transactionService.buyAsset(user, asset, quantity, date);
+        transactionService.buyAsset(user, asset, quantity);
     }
 
     /*
     Sælger Asset fra bruger -> uddelegerer til TransactionService
      */
 
-    public void sellAsset(User user, Asset asset, int quantity, int date){
+    public void sellAsset(User user, Asset asset, int quantity){
         if (user == null || asset == null){
             throw new IllegalArgumentException("User or asset can't be null");
         }
         if (quantity <= 0){
             throw new IllegalArgumentException("Quantity can't be negative");
         }
-        transactionService.sellAsset(user, asset, quantity, date);
+        transactionService.sellAsset(user, asset, quantity);
     }
 }
