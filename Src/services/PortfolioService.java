@@ -65,11 +65,10 @@ public class PortfolioService {
         }
 
         // 2) search bonds
-        BondRepository bondRepo = new BondRepository();
-        List<Bond> bonds = bondRepo.loadBonds();
+        List<Bond> bonds = bondRepository.loadBonds();
         for (Bond b : bonds) {
             if (b.getTicker().equalsIgnoreCase(ticker)) {
-                return currencyService.convertToDKK(b.getPrice(), b.getCurrency());
+                return currencyService.convertToDKK(b   .getPrice(), b.getCurrency());
             }
         }
 
@@ -77,16 +76,17 @@ public class PortfolioService {
         return -1;
     }
 
+    public List<Stock> getAllStocks() {
+        return stockmarketRepository.loadStockmarket();
+    }
+
     public double getTotalValue(Portfolio portfolio) {
-
         double total = portfolio.getCashBalance();
-
         Map<String, Integer> holdings = portfolio.getHolding();
 
         for (Map.Entry<String, Integer> entry : holdings.entrySet()) {
             String ticker = entry.getKey();
             int quantity = entry.getValue();
-
             double priceDKK = getCurrentPriceDKK(ticker);
 
             if (priceDKK > 0) {

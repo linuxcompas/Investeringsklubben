@@ -15,7 +15,7 @@ public class RankingService {
     /**
      * Ranger brugere efter samlet porteføljeværdi (DKK)
      */
-    public List<User> rankUsersByTotalWealth(List<User> users) {
+    public List<User> rankUsersByCash(List<User> users) {
         if (users == null) return Collections.emptyList();
 
 
@@ -32,5 +32,23 @@ public class RankingService {
         });
 
         return sortedUsers;
+    }
+
+    public List<User> rankUsersByTotalWealth(List<User> users) {
+        if (users == null) return Collections.emptyList();
+
+        List<User> sorted = new ArrayList<>(users);
+
+        sorted.sort((u1, u2) -> {
+            Portfolio p1 = portfolioService.buildPortfolio(u1);
+            Portfolio p2 = portfolioService.buildPortfolio(u2);
+
+            double v1 = portfolioService.getTotalValue(p1);
+            double v2 = portfolioService.getTotalValue(p2);
+
+            return Double.compare(v2, v1); // descending
+        });
+
+        return sorted;
     }
 }

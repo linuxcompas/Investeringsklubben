@@ -22,16 +22,19 @@ public class PortfolioController {
     private final TransactionService transactionService;
     private final TransactionRepository transactionRepository;
     private final CurrencyService currencyService;
+    private final StockmarketService stockmarketService;
 
     public PortfolioController(PortfolioService portfolioService,
                                TransactionService transactionService,
                                TransactionRepository transactionRepository,
-                               CurrencyService currencyService) {
+                               CurrencyService currencyService,
+                               StockmarketService stockmarketService) {
 
         this.portfolioService = portfolioService;
         this.transactionService = transactionService;
         this.transactionRepository = transactionRepository;
         this.currencyService = currencyService;
+        this.stockmarketService = stockmarketService;
     }
 
 
@@ -74,32 +77,13 @@ public class PortfolioController {
         Map<String, Integer> holdings = portfolio.getAllHoldings(transactions);
         return holdings.getOrDefault(ticker.toUpperCase(), 0);
     }
+    public double getPortfolioValue(User user) {
+        if (user == null) throw new IllegalArgumentException("User cannot be null");
 
-    /*
-    Køber Asset til bruger -> uddelegerer til TransactionService
-     */
-
-    public void buyAsset(User user, Asset asset, int quantity){
-        if (user == null || asset == null){
-            throw new IllegalArgumentException("User or asset can't be null");
-        }
-        if (quantity <= 0){
-            throw new IllegalArgumentException("Quantity can't be negative");
-        }
-        transactionService.buyAsset(user, asset, quantity);
+        Portfolio p = portfolioService.buildPortfolio(user);
+        return portfolioService.getTotalValue(p);
     }
 
-    /*
-    Sælger Asset fra bruger -> uddelegerer til TransactionService
-     */
 
-    public void sellAsset(User user, Asset asset, int quantity){
-        if (user == null || asset == null){
-            throw new IllegalArgumentException("User or asset can't be null");
-        }
-        if (quantity <= 0){
-            throw new IllegalArgumentException("Quantity can't be negative");
-        }
-        transactionService.sellAsset(user, asset, quantity);
-    }
+
 }

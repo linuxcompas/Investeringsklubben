@@ -57,4 +57,10 @@ public class StockmarketService {
 
             return price * rate;
         }
+
+        // henter alle aktier
+    public List<Stock> getAllStocks() {
+        return stockRepo.loadStockmarket();
     }
+
+}

@@ -12,12 +12,15 @@ public class TransactionService {
     private final TransactionRepository transactionRepository;
     private final UserRepository userRepository;
     private final CurrencyService currencyService;
+    private final PortfolioService portfolioService;
 
     public TransactionService(TransactionRepository transactionRepository,
                               UserRepository userRepository,
+                              PortfolioService portfolioService,
                               CurrencyService currencyService) {
         this.transactionRepository = transactionRepository;
         this.userRepository = userRepository;
+        this.portfolioService = portfolioService;
         this.currencyService = currencyService;
     }
 
@@ -33,12 +36,7 @@ public class TransactionService {
             throw new IllegalArgumentException("Quantity must be positive.");
         }
 
-        Portfolio currentPortfolio = new PortfolioService(
-                transactionRepository,
-                null,
-                null,
-                currencyService
-        ).buildPortfolio(user);
+        Portfolio currentPortfolio = portfolioService.buildPortfolio(user);
 
         double pricePerUnit = asset.getPrice();
         double totalPrice = pricePerUnit * quantity;
@@ -159,5 +157,9 @@ public class TransactionService {
         List<Transaction> all = transactionRepository.loadTransactions();
         all.add(t);
         transactionRepository.saveTransactions(all);
+    }
+
+    public List<Transaction> getTransactionsByUser(int userId) {
+        return transactionRepository.getTransactionByUserId(userId);
     }
 }

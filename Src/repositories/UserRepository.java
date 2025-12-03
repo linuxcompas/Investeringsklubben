@@ -16,6 +16,7 @@ public class UserRepository {
     public UserRepository(String filePath) {
         this.filePath = filePath;
     }
+
     public List<User> loadUsers() {
         List<User> users = new ArrayList<>();
 
@@ -83,30 +84,31 @@ public class UserRepository {
 
     public void saveUsers(List<User> users) {
 
-            try (BufferedWriter bw = new BufferedWriter(new FileWriter("Database/users.csv"))) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("Database/users.csv"))) {
 
-                bw.write("user_id;full_name;email;birth_date;initial_cash_DKK;created_at;last_updated; cashBalance");
+            bw.write("user_id;full_name;email;birth_date;initial_cash_DKK;created_at;last_updated; cashBalance");
+            bw.newLine();
+
+            for (User u : users) {
+
+                String line = String.join(";",
+                        String.valueOf(u.getId()),
+                        u.getFullName(),
+                        u.getEmail(),
+                        String.valueOf(u.getBirthDate()),
+                        String.valueOf(u.getInitialCashDKK()),
+                        String.valueOf(u.getCreatedAt()),
+                        String.valueOf(u.getLastUpdated())
+                );
+
+                bw.write(line);
                 bw.newLine();
-
-                for (User u : users) {
-
-                    String line = String.join(";",
-                            String.valueOf(u.getId()),
-                            u.getFullName(),
-                            u.getEmail(),
-                            String.valueOf(u.getBirthDate()),
-                            String.valueOf(u.getInitialCashDKK()),
-                            String.valueOf(u.getCreatedAt()),
-                            String.valueOf(u.getLastUpdated())
-                    );
-
-                    bw.write(line);
-                    bw.newLine();
-                }
-
             }
-            catch (IOException e) {
-                e.printStackTrace();
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
+}
+
 
