@@ -36,6 +36,7 @@ public class TransactionService {
         Portfolio currentPortfolio = new PortfolioService(
                 transactionRepository,
                 null,
+                null,
                 currencyService
         ).buildPortfolio(user);
 

@@ -3,10 +3,17 @@ import structure.*;
 import repositories.*;
 import services.*;
 import controller.*;
-
 import java.util.*;
 
 public class ASCIIFormatter {
+
+    private final AdminController adminController;
+    private final UserController userController;
+
+    public ASCIIFormatter(AdminController adminController, UserController userController) {
+        this.adminController = adminController;
+        this.userController = userController;
+    }
 
     private static final Scanner sc = new Scanner(System.in);
 
@@ -209,47 +216,61 @@ public class ASCIIFormatter {
 
 
 
-    public static User formatLoginScreen() {
-        Scanner sc = new Scanner(System.in);
-        UserController userController = new UserController();
+    public void formatLoginScreen() {
 
-        while (true) {
-            System.out.println("====================================");
-            System.out.println("            LOGIN MENU");
-            System.out.println("====================================");
-            System.out.println("[1] Admin login");
-            System.out.println("[2] User login");
-            System.out.print("Choose: ");
-            String choice = sc.nextLine();
+        System.out.println("======================================");
+        System.out.println("           LOGIN MENU");
+        System.out.println("======================================");
+        System.out.println("1: Admin login");
+        System.out.println("2: User login");
+        System.out.print("Valg: ");
 
-            switch (choice) {
-                case "1": {
-                    User admin = AdminController.adminLogin();
-                    if (admin != null) {
-                        System.out.println("Admin login successful!\n");
-                        return admin;
-                    }
-                    System.out.println("Wrong admin credentials. Try again.\n");
-                    break;
-                }
+        String choice = sc.nextLine();
 
-
-                case "2": {
-                    System.out.print("Enter your email: ");
-                    String email = sc.nextLine();
-                    System.out.print("Enter your password: ");
-                    String password = sc.nextLine();
-
-                    try {
-                        User user = userController.login(email, password);
-                        System.out.println("User login successful!\n");
-                        return user;
-                    } catch (IllegalArgumentException e) {
-                        System.out.println(e.getMessage() + " Try again.\n");
-                    }
-                    break;
-                }
+        switch (choice) {
+            case "1" -> adminLoginFlow();
+            case "2" -> userLoginFlow();
+            default -> {
+                System.out.println("Ugyldigt valg.\n");
+                formatLoginScreen(); // restart screen
             }
+        }
+    }
+
+    private void adminLoginFlow() {
+        System.out.print("Admin brugernavn: ");
+        String username = sc.nextLine();
+
+        System.out.print("Admin password: ");
+        String password = sc.nextLine();
+
+        boolean ok = adminController.adminLogin(username, password);
+
+        if (!ok) {
+            System.out.println("Forkert admin login!\n");
+            formatLoginScreen();
+            return;
+        }
+
+        System.out.println("✔ Admin login succesfuld!\n");
+        // continue to admin menu here
+    }
+
+    private void userLoginFlow() {
+        System.out.print("Email: ");
+        String email = sc.nextLine();
+
+        System.out.print("Password: ");
+        String password = sc.nextLine();
+
+        try {
+            User u = userController.login(email, password);
+            System.out.println("✔ Login succesfuld! Velkommen, " + u.getFullName());
+            // continue to user menu here
+
+        } catch (IllegalArgumentException e) {
+            System.out.println("Login fejl: " + e.getMessage() + "\n");
+            formatLoginScreen();
         }
     }
 }
