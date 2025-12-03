@@ -1,61 +1,78 @@
 package menu;
+
 import controller.*;
 import services.*;
 import repositories.*;
-import structure.*;
-
-
 
 public class MainMenu {
 
     public static void main(String[] args) {
 
-        BondRepository bondRepository = new BondRepository();
-        StockmarketRepository stockmarketRepository = new StockmarketRepository();
-        CurrencyRepository currencyRepository = new CurrencyRepository();
-        TransactionRepository transactionRepository = new TransactionRepository();
+        // ---------------------
+        // REPOSITORIES
+        // ---------------------
         UserRepository userRepository = new UserRepository("Database/users.csv");
+        BondRepository bondRepository = new BondRepository();
+        CurrencyRepository currencyRepository = new CurrencyRepository();
+        StockmarketRepository stockmarketRepository = new StockmarketRepository();
+        TransactionRepository transactionRepository = new TransactionRepository();
 
-
-        BondService bondService = new BondService(bondRepository, currencyRepository);
+        // ---------------------
+        // SERVICES
+        // ---------------------
         CurrencyService currencyService = new CurrencyService();
-        PortfolioService portfolioService = new PortfolioService(transactionRepository,
+        BondService bondService = new BondService(bondRepository, currencyService);
+        StockmarketService stockmarketService = new StockmarketService(stockmarketRepository, currencyService);
+        PortfolioService portfolioService = new PortfolioService(
+                transactionRepository,
                 bondRepository,
                 stockmarketRepository,
-                currencyService);
+                currencyService
+        );
         RankingService rankingService = new RankingService(portfolioService);
-        StockmarketService stockmarketService = new StockmarketService(stockmarketRepository,
-                currencyService);
-        TransactionService transactionService = new TransactionService(transactionRepository,
+        TransactionService transactionService = new TransactionService(
+                transactionRepository,
                 userRepository,
                 portfolioService,
-                currencyService);
+                currencyService
+        );
 
-        AdminController adminController = new AdminController(userRepository,
-                rankingService,
+        // ---------------------
+        // CONTROLLERS
+        // ---------------------
+        StockController stockController = new StockController(stockmarketService);
+        BondController bondController = new BondController(bondService);
+        TransactionController transactionController = new TransactionController(transactionService);
+
+        PortfolioController portfolioController = new PortfolioController(
                 portfolioService,
-                stockController,
-                currencyService);
-        PortfolioController portfolioController = new PortfolioController(portfolioService,
                 transactionService,
                 transactionRepository,
                 currencyService,
-                stockmarketService);
-        StockController stockController = new StockController(stockmarketService);
-        BondController bondController = new BondController(bondService);
-        UserController userController = new UserController();
-        TransactionController transactionController = new TransactionController(transactionService);
+                stockmarketService
+        );
 
-        ASCIIFormatter formatter = new ASCIIFormatter(adminController,
+        AdminController adminController = new AdminController(
+                userRepository,
+                rankingService,
+                portfolioService,
+                stockController,
+                portfolioController
+        );
+
+        UserController userController = new UserController();
+
+        // ---------------------
+        // FORMATTER & START
+        // ---------------------
+        ASCIIFormatter formatter = new ASCIIFormatter(
+                adminController,
                 portfolioController,
                 stockController,
                 bondController,
-                userController);
-
+                userController
+        );
 
         formatter.formatLoginScreen();
-
     }
-
-
 }
