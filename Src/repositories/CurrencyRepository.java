@@ -38,12 +38,6 @@ public class CurrencyRepository {
                 );
                 currencies.add(c);
 
-
-                String[] row = line.split(";");
-                for (String index : row) {
-                    System.out.printf("%-8s", index);
-                }
-                System.out.println();
             }
 
             br.close();

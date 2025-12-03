@@ -10,17 +10,20 @@ public class ASCIIFormatter {
     private final StockController stockController;
     private final BondController bondController;
     private final UserController userController;
+    private final TransactionController transactionController;
 
     public ASCIIFormatter(AdminController adminController,
                           PortfolioController portfolioController,
                           StockController stockController,
                           BondController bondController,
-                          UserController userController) {
+                          UserController userController,
+                          TransactionController transactionController) {
         this.adminController = adminController;
         this.portfolioController = portfolioController;
         this.stockController = stockController;
         this.bondController = bondController;
         this.userController = userController;
+        this.transactionController = transactionController;
     }
 
     private static final Scanner sc = new Scanner(System.in);
@@ -370,6 +373,7 @@ public class ASCIIFormatter {
 
         System.out.println("✔ Admin login succesfuld!\n");
         // continue to admin menu here
+        formatAdminMenu();
     }
 
     // ------------------------------------------------------------
@@ -387,6 +391,8 @@ public class ASCIIFormatter {
             User u = userController.login(email, password);
             System.out.println("✔ Login succesfuld! Velkommen, " + u.getFullName());
             // continue to user menu here
+
+            formatUserMenu(u, stockController, bondController, portfolioController, transactionController);
 
         } catch (IllegalArgumentException e) {
             System.out.println("Login fejl: " + e.getMessage() + "\n");

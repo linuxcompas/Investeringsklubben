@@ -70,7 +70,8 @@ public class MainMenu {
                 portfolioController,
                 stockController,
                 bondController,
-                userController
+                userController,
+                transactionController
         );
 
         formatter.formatLoginScreen();
