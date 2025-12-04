@@ -5,7 +5,7 @@ import structure.User;
 import java.io.*;
 import java.util.*;
 
-/* CSV I/O
+/* CSV I/O.
 Her fortæller vi java - hvor kommer data fra?
  */
 
