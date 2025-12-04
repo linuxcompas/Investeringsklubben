@@ -23,3 +23,4 @@ id;user_id;date;ticker;price;currency;order_type;quantity
 22;2;2032025;VWS;200,0;DKK;sell;50
 23;1;20251201;AAPL;100,0;USD;buy;5
 24;1;20251202;AAPL;100,0;USD;sell;2
+25;5;4122025;GN;210,0;DKK;buy;1

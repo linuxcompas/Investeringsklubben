@@ -72,6 +72,14 @@ public class TransactionRepository {
             bw.newLine();
 
             for (Transaction t : transactions) {
+                String dateStr = String.valueOf(t.getDate());
+                while (dateStr.length() < 8) {
+                    dateStr = "0" + dateStr;
+                }
+                String formattedDate = dateStr.substring(0, 2) + "-" +
+                        dateStr.substring(2, 4) + "-" +
+                        dateStr.substring(4);
+
 
                 String priceText = String.valueOf(t.getPrice()).replace(".", ",");
 

@@ -308,11 +308,22 @@ public class ASCIIFormatter {
         System.out.println("=================================================================================");
 
         for (Transaction t : transactions) {
-            String dateFormatted = String.format("%04d-%02d-%02d",
-                    t.getDate() / 10000,
-                    (t.getDate() / 100) % 100,
-                    t.getDate() % 100
-            );
+            int dateInt = t.getDate();
+
+            // Konverter int til String med førende nuller
+            String dateStr = String.valueOf(dateInt);
+            while (dateStr.length() < 8) {
+                dateStr = "0" + dateStr;
+            }
+
+            // Udtræk dag, måned, år
+            int day = Integer.parseInt(dateStr.substring(0, 2));
+            int month = Integer.parseInt(dateStr.substring(2, 4));
+            int year = Integer.parseInt(dateStr.substring(4));
+
+            String dateFormatted = String.format("%02d-%02d-%04d", day, month ,year);
+
+
 
             System.out.printf("| %-4d | %-10s | %-10s | %-10s | %-8.2f | %-8d |\n",
                     t.getId(),
