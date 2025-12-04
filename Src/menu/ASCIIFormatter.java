@@ -68,13 +68,13 @@ public class ASCIIFormatter {
         List<Stock> stocks = stockController.getStocksSortedByValueDesc();
 
         System.out.println("\n---------------------- AKTIER -----------------------");
-        System.out.printf("%-8s %-20s %-10s %-12s %-8s %-8s %-10s%n",
+        System.out.printf("%-10s %-25s %-15s %-12s %-10s %-12s %-10s%n",
                 "Ticker", "Navn", "Sektor", "Kurs(DKK)", "Udbytte", "Kreditrating", "Børs");
 
         for (Stock s : stocks) {
             double priceDKK = stockController.getValueInDKK(s);
 
-            System.out.printf("%-8s %-20s %-10s %-12.2f %-8.2f %-8s %-10s%n",
+            System.out.printf("%-10s %-25s %-15s %-12s %-10s %-12s %-10s%n",
                     s.getTicker(), s.getName(), s.getSector(),
                     priceDKK, s.getDividendYield(), s.getRating(), s.getMarket());
         }
