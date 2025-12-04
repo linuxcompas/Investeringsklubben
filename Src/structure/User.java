@@ -27,49 +27,22 @@ public class User implements Comparable<User>{
         this.createdAt = createdAt;
         this.lastUpdated = lastUpdated;
     }
-    // har slettet void under vores getter, da getters aldrig skal stå i void siger google.
-    public int getId() {
-        return id;
-    }
-   public String getFullName() {
-       return fullName;
-   }
-   public String getEmail() {
-       return email;
-   }
-   public int getBirthDate() {
-        return birthDate;
-   }
-   public double getInitialCashDKK() {
-       return initialCashDKK;
-   }
-   public int getCreatedAt() {
-       return createdAt;
-   }
-   public int getLastUpdated() {
-        return lastUpdated;
-   }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    // getters
+    public int getId() { return id; }
+   public String getFullName() { return fullName; }
+   public String getEmail() { return email; }
+   public int getBirthDate() { return birthDate; }
+   public double getInitialCashDKK() { return initialCashDKK; }
+   public int getCreatedAt() { return createdAt; }
+   public int getLastUpdated() { return lastUpdated; }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setBirthDate(int birthDate) {
-        this.birthDate = birthDate;
-    }
-
-   //Setter: Opdatere datoen for hvornår brugeren sidst blev ændret i systemet, så hvergang der bliver foretaget en handling så bliver den nye dato gemt i users.csv
-    public void setLastUpdated(int lastUpdated) {
-        this.lastUpdated = lastUpdated;
-    }
+   // setters
+    public void setId(int id) { this.id = id; }
+    public void setFullName(String fullName) { this.fullName = fullName; }
+    public void setEmail(String email) { this.email = email; }
+    public void setBirthDate(int birthDate) { this.birthDate = birthDate; }
+    public void setLastUpdated(int lastUpdated) { this.lastUpdated = lastUpdated; }
 
        public int compareTo(User o) {
         return Integer.compare(this.id, o.id);
@@ -79,4 +52,3 @@ public String toString() {
           return id + ";" + fullName + ";" + email + ";" + birthDate + ";" + initialCashDKK + ";" + createdAt + ";" + lastUpdated;
       }
  }
-//hej aa

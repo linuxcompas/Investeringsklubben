@@ -35,74 +35,26 @@ public class Transaction implements Comparable<Transaction> {
     }
 
 
-    public Transaction() {
-    }
 
     // Getters
-    public int getId() {
-        return id;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public int getDate() {
-        return date;
-    }
-
-    public String getTicker() {
-        return ticker;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public String getCurrency() {
-        return currency;
-    }
-
-    public String getOrderType() {
-        return orderType;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
+    public int getId() {return id;}
+    public int getUserId() {return userId;}
+    public int getDate() {return date;}
+    public String getTicker() {return ticker;}
+    public double getPrice() {return price;}
+    public String getCurrency() {return currency;}
+    public String getOrderType() {return orderType;}
+    public int getQuantity() {return quantity;}
 
     // Setters
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
-    public void setDate(int date) {
-        this.date = date;
-    }
-
-    public void setTicker(String ticker) {
-        this.ticker = ticker;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public void setCurrency(String currency) {
-        this.currency = currency;
-    }
-
-    public void setOrderType(String orderType) {
-        this.orderType = orderType;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
+    public void setId(int id) {this.id = id;}
+    public void setUserId(int userId) {this.userId = userId;}
+    public void setDate(int date) {this.date = date;}
+    public void setTicker(String ticker) {this.ticker = ticker;}
+    public void setPrice(double price) {this.price = price;}
+    public void setCurrency(String currency) {this.currency = currency;}
+    public void setOrderType(String orderType) {this.orderType = orderType;}
+    public void setQuantity(int quantity) {this.quantity = quantity;}
 
     /**
      * compareTo:

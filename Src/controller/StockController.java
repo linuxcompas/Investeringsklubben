@@ -10,22 +10,32 @@ public class StockController {
 
     private final StockmarketService stockService;
 
+
+
     public StockController(StockmarketService stockService) {
         this.stockService = stockService;
     }
 
+
+    // henter aktier fra ticker
     public Stock getStockByTicker(String ticker) {
         return stockService.getStockByTicker(ticker);
     }
 
+
+    // henter alle aktier
     public List<Stock> getAllStocks() {
         return stockService.getAllStocks();
     }
 
+
+    // henter aktier ud far værdi faldende
     public List<Stock> getStocksSortedByValueDesc() {
         return stockService.getSortedStocksByValue();
     }
 
+
+    // henter aktier efter efter pris stigende
     public List<Stock> getStocksSortedByPriceAsc() {
         return stockService.getAllStocks()
                 .stream()
@@ -33,12 +43,16 @@ public class StockController {
                 .toList();
     }
 
+
+    // henter aktier efter pris faldende
     public List<Stock> getStocksSortedByPriceDesc() {
         return stockService.getAllStocks()
                 .stream()
                 .sorted(Comparator.comparingDouble(Stock::getPrice).reversed())
                 .toList();
     }
+
+    // henter sektorfordeling
     public Map<String, Integer> getSectorDistribution(User user, PortfolioController portfolioController) {
 
         Map<String, Object> portfolio = portfolioController.getPortfolio(user);
@@ -61,6 +75,8 @@ public class StockController {
         return sectors;
     }
 
+
+    // henter værdi i danske kroner
     public double getValueInDKK(Stock stock) {
         return stockService.getValueInDKK(stock);
     }

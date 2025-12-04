@@ -46,6 +46,7 @@ public class MainMenu {
 
         PortfolioController portfolioController = new PortfolioController(
                 portfolioService,
+                userRepository,
                 transactionService,
                 transactionRepository,
                 currencyService,
@@ -57,7 +58,8 @@ public class MainMenu {
                 rankingService,
                 portfolioService,
                 stockController,
-                portfolioController
+                portfolioController,
+                transactionRepository
         );
 
         UserController userController = new UserController();

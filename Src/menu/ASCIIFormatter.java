@@ -38,12 +38,12 @@ public class ASCIIFormatter {
             System.out.println("=====================================================");
             System.out.println("                  AKTIER & OBLIGATIONER");
             System.out.println("=====================================================");
-            System.out.println("[1] Se aktier (by market value desc)");
+            System.out.println("[1] Se aktier (markedsværdi faldende)");
             System.out.println("[2] Se aktier (pris stigende)");
             System.out.println("[3] Se aktier (pris faldende)");
             System.out.println("[4] Se obligationer (udløbsdato stigende)");
             System.out.println("[5] Se obligationer (rente faldende)");
-            System.out.println("[6] Exit");
+            System.out.println("[6] Tilbage");
             System.out.print("Vælg en mulighed: ");
 
             String choice = sc.nextLine().trim();
@@ -134,23 +134,45 @@ public class ASCIIFormatter {
                 (Map<String, Integer>) portfolioData.get("holdings");
 
         System.out.println("=== Portfolio opsummering ===");
-        System.out.printf("Kontantbeholdning: %.2f DKK%n", cash);
+        System.out.printf("Kontantbeholdning: %.2f DKK%n%n", cash);
 
         if (holdings.isEmpty()) {
-            System.out.println("Ingen aktier i portfolio.");
+            System.out.println("Ingen aktiver i porteføljen.");
             return;
         }
 
-        System.out.println("\nAktiver:");
-        System.out.println("+-------+----------+");
-        System.out.println("| Ticker| Mængde |");
-        System.out.println("+-------+----------+");
+        // Hent gain/loss fra controller
+        Map<String, Double> gainLoss =
+                portfolioController.getUserGainLoss(user.getId());
+
+        System.out.println("+--------+----------+--------------+--------------+--------------+");
+        System.out.println("| Ticker | Mængde   | Kurs (DKK)   | Værdi (DKK)  | Gain/Loss    |");
+        System.out.println("+--------+----------+--------------+--------------+--------------+");
+
+        double totalValue = cash;
 
         for (Map.Entry<String, Integer> entry : holdings.entrySet()) {
-            System.out.printf("| %-6s | %8d |%n", entry.getKey(), entry.getValue());
+
+            String ticker = entry.getKey();
+            int qty = entry.getValue();
+
+            // get current price in DKK
+            double currentPrice = portfolioController.getCurrentPriceDKK(ticker);
+
+
+            double value = currentPrice * qty;
+            totalValue += value;
+
+            double gl = gainLoss.getOrDefault(ticker, 0.0);
+
+            System.out.printf(
+                    "| %-6s | %8d | %12.2f | %12.2f | %12.2f |\n",
+                    ticker, qty, currentPrice, value, gl
+            );
         }
 
-        System.out.println("+-------+----------+");
+        System.out.println("+--------+----------+--------------+--------------+--------------+");
+        System.out.printf("Total porteføljeværdi: %.2f DKK%n", totalValue);
     }
     // ------------------------------------------------------------
     // KØB :
@@ -274,7 +296,7 @@ public class ASCIIFormatter {
         Map<String, Integer> dist = adminController.getAssetDistribution(id);
 
         System.out.println("\n===== AKTIVER FORDELING =====");
-        System.out.println("Aktier: " + dist.get("stock"));
+        System.out.println("Aktier: " + dist.get("stocks"));
         System.out.println("Obligationer : " + dist.get("bonds"));
         System.out.println();
     }
@@ -349,8 +371,8 @@ public class ASCIIFormatter {
         System.out.println("======================================");
         System.out.println("           LOGIN MENU");
         System.out.println("======================================");
-        System.out.println("1: Admin login");
-        System.out.println("2: Bruger login");
+        System.out.println("[1] Admin login");
+        System.out.println("[2] Bruger login");
         System.out.print("Valg: ");
 
         String choice = sc.nextLine();
@@ -420,11 +442,11 @@ public class ASCIIFormatter {
 
         while (!exit) {
             System.out.println("============= ADMIN MENU =============");
-            System.out.println("1: Se alle brugere + portfolio værdi");
-            System.out.println("2: Se rangliste");
-            System.out.println("3: Se aktiefordeling for en bruger");
-            System.out.println("4: Se sektorfordeling for en bruger");
-            System.out.println("5: Exit");
+            System.out.println("[1] Se alle brugere + portfolio værdi");
+            System.out.println("[2] Se rangliste");
+            System.out.println("[3] Se aktiefordeling for en bruger");
+            System.out.println("[4] Se sektorfordeling for en bruger");
+            System.out.println("[5] Log ud");
             System.out.print("Valg: ");
 
             String choice = sc.nextLine();
@@ -463,14 +485,14 @@ public class ASCIIFormatter {
         boolean exit = false;
 
         while (!exit) {
-            System.out.println("============= USER MENU =============");
+            System.out.println("============= BRUGER MENU =============");
             System.out.println("Logget ind som: " + user.getFullName());
-            System.out.println("1: Se aktiver");
-            System.out.println("2: Køb aktiver");
-            System.out.println("3: Sælg aktiver");
-            System.out.println("4: Se portfolio");
-            System.out.println("5: Se transaktionshistorik");
-            System.out.println("6: Log ud");
+            System.out.println("[1] Se marked");
+            System.out.println("[2] Køb aktiver");
+            System.out.println("[3] Sælg aktiver");
+            System.out.println("[4] Se portfolio");
+            System.out.println("[5] Se transaktionshistorik");
+            System.out.println("[6] Log ud");
             System.out.print("Vælg: ");
 
             String choice = sc.nextLine();

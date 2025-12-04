@@ -13,17 +13,20 @@ public class AdminController {
     private final PortfolioService portfolioService;
     private final StockController stockController;
     private final PortfolioController portfolioController;
+    private final TransactionRepository transactionRepository;
 
     public AdminController(UserRepository userRepository,
                            RankingService rankingService,
                            PortfolioService portfolioService,
                            StockController stockController,
-                           PortfolioController portfolioController) {
+                           PortfolioController portfolioController,
+                           TransactionRepository transactionRepository) {
         this.userRepository = userRepository;
         this.rankingService = rankingService;
         this.portfolioService = portfolioService;
         this.stockController = stockController;
         this.portfolioController = portfolioController;
+        this.transactionRepository = transactionRepository;
     }
 
     //Henter alle brugere
@@ -32,15 +35,29 @@ public class AdminController {
     }
 
 
+    // henter rangliste
     public List<User> viewRankings() {
         List<User> users = userRepository.loadUsers();
         return rankingService.rankUsersByTotalWealth(users);
     }
 
+    // se fordeling af sektorer
     public Map<String, Integer> viewSectorDistribution(User user) {
         return stockController.getSectorDistribution(user, portfolioController);
     }
 
+    // henter aktiefordeling
+    public Map<String, Integer> getAssetDistribution(int userId) {
+        User user = userRepository.getUserById(userId);
+        if (user == null) {
+            throw new IllegalArgumentException("User not found");
+        }
+
+        return portfolioService.getAssetDistribution(user);
+    }
+
+
+    // se bruger detaljer
     public Portfolio viewUserDetails(int userId) {
 
         User user = userRepository.getUserById(userId);
@@ -51,11 +68,13 @@ public class AdminController {
 
         return portfolioService.buildPortfolio(user);
     }
+
+    // hent bruger efter ID
     public User getUserById(int id) {
         return userRepository.getUserById(id);
     }
 
-
+// hent portfolio værdi
     public Map<User, Double> getPortfolioValues() {
         Map<User, Double> result = new LinkedHashMap<>();
 
@@ -65,29 +84,6 @@ public class AdminController {
             result.put(u, value);
         }
         return result;
-    }
-
-    public Map<String, Integer> getAssetDistribution(int userId) {
-        User user = userRepository.getUserById(userId);
-        Portfolio p = portfolioService.buildPortfolio(user);
-
-        Map<String, Integer> holdings = p.getHolding();
-        Map<String, Integer> dist = new HashMap<>();
-
-        int stocks = 0;
-        int bonds = 0;
-
-        for (String ticker : holdings.keySet()) {
-            if (ticker.startsWith("STK")) stocks += holdings.get(ticker);
-            else if (ticker.startsWith("BND")) bonds += holdings.get(ticker);
-        }
-
-
-
-        dist.put("stocks", stocks);
-        dist.put("bonds", bonds);
-
-        return dist;
     }
 
 

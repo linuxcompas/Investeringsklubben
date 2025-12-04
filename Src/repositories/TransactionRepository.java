@@ -62,7 +62,6 @@ public class TransactionRepository {
         return userTransactions;
     }
 
-
     public void saveTransactions(List<Transaction> transactions) {
 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("Database/transactions.csv"))) {

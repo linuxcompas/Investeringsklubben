@@ -11,6 +11,7 @@ Low coupling
  */
 
 import repositories.TransactionRepository;
+import repositories.UserRepository;
 import services.*;
 import structure.*;
 
@@ -19,18 +20,21 @@ import java.util.*;
 public class PortfolioController {
 
     private final PortfolioService portfolioService;
+    private final UserRepository userRepository;
     private final TransactionService transactionService;
     private final TransactionRepository transactionRepository;
     private final CurrencyService currencyService;
     private final StockmarketService stockmarketService;
 
     public PortfolioController(PortfolioService portfolioService,
+                               UserRepository userRepository,
                                TransactionService transactionService,
                                TransactionRepository transactionRepository,
                                CurrencyService currencyService,
                                StockmarketService stockmarketService) {
 
         this.portfolioService = portfolioService;
+        this.userRepository = userRepository;
         this.transactionService = transactionService;
         this.transactionRepository = transactionRepository;
         this.currencyService = currencyService;
@@ -82,6 +86,17 @@ public class PortfolioController {
 
         Portfolio p = portfolioService.buildPortfolio(user);
         return portfolioService.getTotalValue(p);
+    }
+
+    // henter gevinst / tab
+    public Map<String, Double> getUserGainLoss(int userId) {
+        User user = userRepository.getUserById(userId);
+        return portfolioService.getGainLoss(user);
+    }
+
+    // henter nuværende pris
+    public double getCurrentPriceDKK(String ticker) {
+        return portfolioService.getCurrentPriceDKK(ticker);
     }
 
 
