@@ -30,6 +30,7 @@ public class TransactionService {
      * - Opdaterer kontantbeholdning
      * - Opretter og gemmer en Transaction i CSV
      */
+
     public void buyAsset(User user, Asset asset, int quantity) {
         int date = DateTime.todayAsInt();
         if (quantity <= 0) {

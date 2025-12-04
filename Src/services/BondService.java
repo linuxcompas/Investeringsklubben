@@ -14,10 +14,14 @@ public class BondService {
         this.currencyService = currencyService;
     }
 
+
+    // henter alle obligationer
     public List<Bond> getAllBonds() {
         return bondRepo.loadBonds();
     }
 
+
+    // hent obligation efter ticker
     public Bond getBondByTicker(String ticker) {
         if (ticker == null || ticker.isBlank()) return null;
 
@@ -29,7 +33,7 @@ public class BondService {
         return null;
     }
 
-
+// hent pris i danske kroner
     public double getPriceInDKK(Bond bond) {
         if (bond.getCurrency().equalsIgnoreCase("DKK")) {
             return bond.getPrice();

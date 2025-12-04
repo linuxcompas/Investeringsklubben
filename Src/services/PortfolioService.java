@@ -24,6 +24,8 @@ public class PortfolioService {
         this.currencyService = currencyService;
     }
 
+
+    // bygger portfolio
     public Portfolio buildPortfolio(User user) {
         Portfolio portfolio = new Portfolio(user);
         List<Transaction> userTransactions =
@@ -76,6 +78,7 @@ public class PortfolioService {
         return -1;
     }
 
+    // henter alle aktier
     public List<Stock> getAllStocks() {
         return stockmarketRepository.loadStockmarket();
     }
@@ -147,6 +150,7 @@ public class PortfolioService {
         return dist;
     }
 
+    // beregner gevinst / tab
     public Map<String, Double> getGainLoss(User user) {
 
         List<Transaction> transactions =

@@ -30,12 +30,10 @@
         // getters
         public User getOwner() { return owner; }
         public double getCashBalance() { return cashBalance; }
-        public Map<String, Integer> getHolding() {
-            return holdings;
-        }
-
+        public Map<String, Integer> getHolding() {return holdings;}
         public int getUserId() { return owner.getId(); }
         public String getEmail() { return owner.getEmail(); }
+
 
 
         public void setCashBalance(double cashBalance) { this.cashBalance = cashBalance; }

@@ -34,6 +34,7 @@ public class RankingService {
         return sortedUsers;
     }
 
+    // rangliste over total værdi af portfolio
     public List<User> rankUsersByTotalWealth(List<User> users) {
         if (users == null) return Collections.emptyList();
 

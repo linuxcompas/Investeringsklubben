@@ -35,15 +35,29 @@ public class AdminController {
     }
 
 
+    // henter rangliste
     public List<User> viewRankings() {
         List<User> users = userRepository.loadUsers();
         return rankingService.rankUsersByTotalWealth(users);
     }
 
+    // se fordeling af sektorer
     public Map<String, Integer> viewSectorDistribution(User user) {
         return stockController.getSectorDistribution(user, portfolioController);
     }
 
+    // henter aktiefordeling
+    public Map<String, Integer> getAssetDistribution(int userId) {
+        User user = userRepository.getUserById(userId);
+        if (user == null) {
+            throw new IllegalArgumentException("User not found");
+        }
+
+        return portfolioService.getAssetDistribution(user);
+    }
+
+
+    // se bruger detaljer
     public Portfolio viewUserDetails(int userId) {
 
         User user = userRepository.getUserById(userId);
@@ -54,11 +68,13 @@ public class AdminController {
 
         return portfolioService.buildPortfolio(user);
     }
+
+    // hent bruger efter ID
     public User getUserById(int id) {
         return userRepository.getUserById(id);
     }
 
-
+// hent portfolio værdi
     public Map<User, Double> getPortfolioValues() {
         Map<User, Double> result = new LinkedHashMap<>();
 
@@ -70,14 +86,6 @@ public class AdminController {
         return result;
     }
 
-    public Map<String, Integer> getAssetDistribution(int userId) {
-        User user = userRepository.getUserById(userId);
-        if (user == null) {
-            throw new IllegalArgumentException("User not found");
-        }
-
-        return portfolioService.getAssetDistribution(user);
-    }
 
     public boolean adminLogin(String username, String password) {
         return "admin".equals(username) && "admin".equals(password);

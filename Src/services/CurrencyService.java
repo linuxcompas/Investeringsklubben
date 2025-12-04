@@ -17,11 +17,15 @@ public class CurrencyService {
         this.currencies = currencyRepository.loadCurrency();
     }
 
+
+    // omregner i dkk
     public double convertToDKK(double value, String currency) {
         double rate = getRate(currency);
         return value * rate;
     }
 
+
+    // henter kurs
     public double getRate(String currency) {
         for (Currency c : currencies) {
             if (c.getBaseCurrency().equalsIgnoreCase(currency)) {

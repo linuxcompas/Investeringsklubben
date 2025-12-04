@@ -28,15 +28,12 @@ public class Currency implements Comparable<Currency>{
     public String getBaseCurrency() {
         return baseCurrency;
     }
-
     public String getQuoteCurrency() {
         return quoteCurrency;
     }
-
     public double getRate() {
         return rate;
     }
-
     public int getLastUpdated() {
         return lastUpdated;
     }
@@ -45,15 +42,12 @@ public class Currency implements Comparable<Currency>{
     public void setBaseCurrency(String baseCurrency) {
         this.baseCurrency = baseCurrency;
     }
-
     public void setQuoteCurrency(String quoteCurrency) {
         this.quoteCurrency = quoteCurrency;
     }
-
     public void setRate(double rate) {
         this.rate = rate;
     }
-
     public void setLastUpdated(int lastUpdated) {
         this.lastUpdated = lastUpdated;
     }
