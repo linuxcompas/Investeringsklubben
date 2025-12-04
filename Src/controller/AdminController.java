@@ -13,17 +13,20 @@ public class AdminController {
     private final PortfolioService portfolioService;
     private final StockController stockController;
     private final PortfolioController portfolioController;
+    private final TransactionRepository transactionRepository;
 
     public AdminController(UserRepository userRepository,
                            RankingService rankingService,
                            PortfolioService portfolioService,
                            StockController stockController,
-                           PortfolioController portfolioController) {
+                           PortfolioController portfolioController,
+                           TransactionRepository transactionRepository) {
         this.userRepository = userRepository;
         this.rankingService = rankingService;
         this.portfolioService = portfolioService;
         this.stockController = stockController;
         this.portfolioController = portfolioController;
+        this.transactionRepository = transactionRepository;
     }
 
     //Henter alle brugere
@@ -69,27 +72,12 @@ public class AdminController {
 
     public Map<String, Integer> getAssetDistribution(int userId) {
         User user = userRepository.getUserById(userId);
-        Portfolio p = portfolioService.buildPortfolio(user);
-
-        Map<String, Integer> holdings = p.getHolding();
-        Map<String, Integer> dist = new HashMap<>();
-
-        int stocks = 0;
-        int bonds = 0;
-
-        for (String ticker : holdings.keySet()) {
-            if (ticker.startsWith("STK")) stocks += holdings.get(ticker);
-            else if (ticker.startsWith("BND")) bonds += holdings.get(ticker);
+        if (user == null) {
+            throw new IllegalArgumentException("User not found");
         }
 
-
-
-        dist.put("stocks", stocks);
-        dist.put("bonds", bonds);
-
-        return dist;
+        return portfolioService.getAssetDistribution(user);
     }
-
 
     public boolean adminLogin(String username, String password) {
         return "admin".equals(username) && "admin".equals(password);
