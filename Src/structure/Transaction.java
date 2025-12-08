@@ -16,6 +16,7 @@ public class Transaction implements Comparable<Transaction> {
     private String orderType;
     private int quantity;
 
+    // Constructor: Opretter en transaktion med alle relevante oplysninger.
     public Transaction(int id,
                        int userId,
                        int date,
@@ -69,7 +70,7 @@ public class Transaction implements Comparable<Transaction> {
         return Integer.compare(this.id, t.id);
     }
 
-
+// ToString: Bruges til at vise transaktionens indhold
     @Override
     public String toString() {
         return "Transaction{" +

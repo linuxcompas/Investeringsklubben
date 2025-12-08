@@ -6,7 +6,7 @@ import utility.DateTime;
 
 import java.util.*;
 
-
+// Indeholder alt forretningslogik for køb og salg af aktier
 public class TransactionService {
 
     private final TransactionRepository transactionRepository;
@@ -14,6 +14,7 @@ public class TransactionService {
     private final CurrencyService currencyService;
     private final PortfolioService portfolioService;
 
+    // Konstruktør
     public TransactionService(TransactionRepository transactionRepository,
                               UserRepository userRepository,
                               PortfolioService portfolioService,
@@ -47,6 +48,7 @@ public class TransactionService {
             throw new IllegalArgumentException("Insufficient funds.");
         }
 
+        // Opret en kvittering
         Transaction t = createTransaction(
                 user.getId(),
                 date,
@@ -72,6 +74,7 @@ public class TransactionService {
             throw new IllegalArgumentException("Quantity must be positive.");
         }
 
+        // Tjek hvor mange brugeren ejer af aktien
         int currentHolding = getHoldingForUserAndTicker(user.getId(), asset.getTicker());
         if (currentHolding < quantity) {
             throw new IllegalArgumentException("Insufficient asset quantity.");
@@ -113,7 +116,7 @@ public class TransactionService {
     }
 
     /**
-     * Opretter Transaction-objekt med et automatisk ID.
+     * Opretter Transaction-objekt med et nyt automatisk ID.
      */
     private Transaction createTransaction(int userId,
                                           int date,

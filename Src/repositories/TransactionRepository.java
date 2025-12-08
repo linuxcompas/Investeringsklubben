@@ -4,10 +4,10 @@ import structure.Transaction;
 import java.io.*;
 import java.util.*;
 
-
+// TransactionRespository håndterer alt læsning og skrivning af transkationer til og fra CSV-filen
 public class TransactionRepository {
 
-    // .csv IN:
+    // Loader alle transaktioner fra CSV-filen
     public List<Transaction> loadTransactions() {
         List<Transaction> transactions = new ArrayList<>();
 
@@ -50,6 +50,7 @@ public class TransactionRepository {
         return transactions;
     }
 
+    // Finder alle transaktioner for en given bruger
     public List<Transaction> getTransactionByUserId(int userId) {
         List<Transaction> allTransactions = loadTransactions();
         List<Transaction> userTransactions = new ArrayList<>();
@@ -62,6 +63,7 @@ public class TransactionRepository {
         return userTransactions;
     }
 
+    // Gemmer alle transaktioner i CSV-filen igen
     public void saveTransactions(List<Transaction> transactions) {
 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("Database/transactions.csv"))) {
